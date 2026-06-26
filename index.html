@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olives Restaurant & Bar — Kampala</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive:       '#6B7C3E',
+            'olive-dk':  '#3F4E20',
+            'olive-md':  '#2A3318',
+            'olive-lt':  '#8BA059',
+            forest:      '#0D1107',
+            cream:       '#F5F0E8',
+            'cream-dk':  '#EBE4D8',
+            gold:        '#C4A35A',
+            sage:        '#5C6B35',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garant"', 'serif'],
+            body:    ['"DM Sans"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #0D1107; color: #F5F0E8; overflow-x: hidden; }
+
+    /* ── CURTAIN ── */
+    #curtain {
+      position: fixed; inset: 0; z-index: 9000;
+      display: flex; flex-direction: column;
+      pointer-events: none;
+    }
+    .c-panel {
+      width: 100%; height: 50%;
+      background: #0D1107;
+      transition: transform 1.3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .c-top  { transform-origin: top; }
+    .c-bot  { transform-origin: bottom; }
+    #curtain.open .c-top { transform: translateY(-100%); }
+    #curtain.open .c-bot { transform: translateY(100%);  }
+
+    #curtain-logo {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      z-index: 9001;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #curtain-logo img {
+      width: 180px;
+      filter: brightness(0) invert(1);
+      display: block;
+    }
+    #curtain-logo.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    #curtain-logo.exit {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.1);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.75rem 4rem;
+      opacity: 0; transform: translateY(-8px);
+      transition: opacity 0.7s ease, transform 0.7s ease,
+                  background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease;
+    }
+    #nav.show    { opacity: 1; transform: translateY(0); }
+    #nav.solid   { background: rgba(13,17,7,0.93); backdrop-filter: blur(14px); padding: 1.1rem 4rem; }
+
+    .nav-logo img { height: 46px; filter: drop-shadow(0 1px 6px rgba(0,0,0,0.5)); }
+
+    .nav-links { display: flex; gap: 2.8rem; align-items: center; }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(245,240,232,0.75); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: #F5F0E8; }
+
+    .nav-cta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: #F5F0E8; text-decoration: none;
+      border: 1px solid rgba(245,240,232,0.35);
+      padding: 0.65rem 1.5rem;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .nav-cta:hover { background: #F5F0E8; color: #0D1107; border-color: #F5F0E8; }
+    .nav-cta:focus-visible { outline: 2px solid #6B7C3E; outline-offset: 3px; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: -6%;
+      background:
+        radial-gradient(ellipse 70% 60% at 35% 55%, rgba(107,124,62,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 75% 25%, rgba(42,51,24,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 80% at 50% 80%, rgba(13,17,7,0.8) 0%, transparent 50%),
+        linear-gradient(150deg, #1C2810 0%, #111808 45%, #0A0F05 100%);
+      animation: kbZoom 12s ease-out forwards;
+    }
+    @keyframes kbZoom { from { transform: scale(1.1); } to { transform: scale(1.0); } }
+
+    .hero-leaves {
+      position: absolute; inset: 0; opacity: 0.04; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cellipse cx='100' cy='60' rx='12' ry='40' fill='%236B7C3E' transform='rotate(-30 100 60)'/%3E%3Cellipse cx='130' cy='120' rx='10' ry='36' fill='%236B7C3E' transform='rotate(20 130 120)'/%3E%3Cellipse cx='70' cy='140' rx='9' ry='32' fill='%236B7C3E' transform='rotate(-10 70 140)'/%3E%3C/svg%3E");
+      background-size: 320px;
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(13,17,7,0.25) 0%,
+        rgba(13,17,7,0.05) 40%,
+        rgba(13,17,7,0.75) 100%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: #C4A35A; margin-bottom: 1.8rem;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .hero-eyebrow.on { opacity: 1; transform: translateY(0); }
+
+    .hero-h1 {
+      font-family: 'Cormorant Garant', serif;
+      font-weight: 300; line-height: 0.88; color: #F5F0E8;
+      user-select: none;
+    }
+
+    .hero-l1 {
+      display: block;
+      font-size: clamp(68px, 9.5vw, 138px);
+      font-style: italic; letter-spacing: -0.015em;
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .hero-l1.on { opacity: 1; transform: translateY(0); }
+
+    .hero-l2 {
+      display: block;
+      font-size: clamp(84px, 13vw, 190px);
+      font-weight: 500; letter-spacing: -0.04em;
+      color: #6B7C3E;
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.85s ease 0.18s, transform 0.85s ease 0.18s;
+    }
+    .hero-l2.on { opacity: 1; transform: translateY(0); }
+
+    .hero-rule {
+      width: 1px; height: 40px;
+      background: rgba(245,240,232,0.25);
+      margin: 2rem auto;
+      opacity: 0; transition: opacity 0.6s ease 0.45s;
+    }
+    .hero-rule.on { opacity: 1; }
+
+    .hero-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: rgba(245,240,232,0.55);
+      opacity: 0; transition: opacity 0.6s ease 0.5s;
+    }
+    .hero-sub.on { opacity: 1; }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; transition: opacity 0.6s ease 0.9s;
+    }
+    .hero-scroll.on { opacity: 1; }
+    .scroll-label {
+      font-size: 0.58rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+    }
+    .scroll-bar {
+      width: 1px; height: 52px;
+      background: linear-gradient(to bottom, rgba(245,240,232,0.4), transparent);
+      animation: scrollPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: 0.4; }
+      50% { opacity: 0.9; }
+    }
+
+    /* ── SECTION COMMON ── */
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: #C4A35A; margin-bottom: 1.5rem; display: block;
+    }
+
+    .display-serif {
+      font-family: 'Cormorant Garant', serif;
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
+    }
+
+    .display-serif-italic {
+      font-family: 'Cormorant Garant', serif;
+      font-weight: 300; font-style: italic; line-height: 1.1;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .sr {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .sr.in { opacity: 1; transform: translateY(0); }
+    .sr-d1 { transition-delay: 0.1s; }
+    .sr-d2 { transition-delay: 0.22s; }
+    .sr-d3 { transition-delay: 0.36s; }
+    .sr-d4 { transition-delay: 0.52s; }
+
+    /* ── STORY SECTION ── */
+    #story { background: #F5F0E8; color: #0D1107; }
+    .story-img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(0.85) brightness(0.92);
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease;
+    }
+    .story-img-wrap:hover .story-img { transform: scale(1.03); filter: saturate(1) brightness(0.96); }
+
+    /* ── MENU SECTION ── */
+    #menu { background: #0F130A; }
+    .dish-card { overflow: hidden; position: relative; }
+    .dish-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      filter: brightness(0.82) saturate(0.9);
+      transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease;
+    }
+    .dish-card:hover .dish-img { transform: scale(1.06); filter: brightness(0.92) saturate(1.05); }
+    .dish-card:hover .dish-label { color: #C4A35A; }
+    .dish-label { transition: color 0.25s ease; }
+
+    /* ── FULL BLEED BANNER ── */
+    .full-bleed {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .full-bleed-img {
+      width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
+      filter: brightness(0.55) saturate(0.8);
+    }
+    .full-bleed-content { position: relative; z-index: 2; }
+
+    /* ── BAR SECTION ── */
+    #bar { background: #F5F0E8; color: #0D1107; }
+    .bar-img-wrap { overflow: hidden; }
+    .bar-img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      filter: brightness(0.88) saturate(0.88);
+      transition: transform 0.65s ease, filter 0.4s ease;
+    }
+    .bar-img-wrap:hover .bar-img { transform: scale(1.04); filter: brightness(0.96) saturate(1); }
+
+    /* ── QUOTE SECTION ── */
+    .quote-section { background: #0D1107; }
+
+    /* ── HOURS ── */
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(13,17,7,0.12);
+      font-size: 0.875rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+
+    /* ── CONTACT ── */
+    #contact { background: #1A2210; }
+    .input-field {
+      background: transparent;
+      border: 1px solid rgba(245,240,232,0.25);
+      color: #F5F0E8;
+      padding: 1rem 1.25rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.25s ease;
+    }
+    .input-field::placeholder { color: rgba(245,240,232,0.4); }
+    .input-field:focus { border-color: #6B7C3E; }
+    .input-field option { background: #1A2210; }
+
+    .btn-primary {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+      background: #6B7C3E; color: #F5F0E8;
+      border: none; padding: 1.1rem 2.8rem;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .btn-primary:hover { background: #8BA059; }
+    .btn-primary:focus-visible { outline: 2px solid #C4A35A; outline-offset: 3px; }
+    .btn-primary:active { background: #3F4E20; }
+
+    /* ── FOOTER ── */
+    footer { background: #080D05; border-top: 1px solid rgba(107,124,62,0.2); }
+    .footer-link {
+      font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,240,232,0.5); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover { color: #F5F0E8; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      #nav { padding: 1.2rem 1.5rem; }
+      #nav.solid { padding: 0.9rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+    }
+    @media (max-width: 640px) {
+      .hero-l1 { font-size: clamp(48px, 14vw, 90px); }
+      .hero-l2 { font-size: clamp(60px, 18vw, 120px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════ CURTAIN ══════════════════ -->
+  <div id="curtain">
+    <div class="c-panel c-top"></div>
+    <div class="c-panel c-bot"></div>
+  </div>
+  <div id="curtain-logo">
+    <img src="logo.png" alt="Olives Restaurant & Bar">
+  </div>
+
+  <!-- ══════════════════ NAV ══════════════════ -->
+  <nav id="nav">
+    <a href="#" class="nav-logo" aria-label="Olives Restaurant & Bar">
+      <img src="logo.png" alt="Olives">
+    </a>
+    <div class="nav-links">
+      <a href="#story">Our Story</a>
+      <a href="menu.html">Menu</a>
+      <a href="#bar">Bar</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Contact Us</a>
+  </nav>
+
+  <!-- ══════════════════ HERO ══════════════════ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-leaves"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-eyebrow" id="hEye">Kampala, Uganda</span>
+      <h1 class="hero-h1">
+        <span class="hero-l1" id="hL1">Rooted in</span>
+        <span class="hero-l2" id="hL2">Kampala.</span>
+      </h1>
+      <div class="hero-rule" id="hRule"></div>
+      <span class="hero-sub" id="hSub">Restaurant &amp; Bar &ensp;·&ensp; Since 2003</span>
+    </div>
+
+    <div class="hero-scroll" id="hScroll">
+      <span class="scroll-label">Discover</span>
+      <div class="scroll-bar"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ INTRO / STORY ══════════════════ -->
+  <section id="story" class="overflow-hidden">
+    <div class="max-w-7xl mx-auto px-8 py-32 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+      <div>
+        <span class="section-label sr">Our Story</span>
+        <h2 class="display-serif text-5xl md:text-6xl sr sr-d1" style="color:#0D1107">
+          Where the<br>
+          <em style="color:#6B7C3E;font-style:italic">Mediterranean</em><br>
+          meets Kampala.
+        </h2>
+        <div style="width:48px;height:2px;background:#C4A35A;margin:2rem 0;" class="sr sr-d2"></div>
+        <p class="sr sr-d2" style="color:#3a4030;font-size:1.0625rem;line-height:1.75;max-width:480px">
+          Olives began as a simple idea — that Kampala deserved a place where the richness of East African ingredients met the sun-drenched flavours of the Mediterranean. Two decades on, we remain that place: a garden table for curious palates, a bar for long evenings, and a kitchen that honours what grows close to home.
+        </p>
+        <p class="sr sr-d3" style="color:#3a4030;font-size:1.0625rem;line-height:1.75;max-width:480px;margin-top:1.2rem">
+          Every dish carries a thread back to Uganda — the Nile perch, the passion fruit, the smoky groundnut — woven alongside olive oil, preserved lemons, and hand-rolled couscous. This is not fusion for its own sake. It is cooking that knows exactly where it stands.
+        </p>
+        <a href="#contact" class="sr sr-d4" style="display:inline-block;margin-top:2.5rem;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:#0D1107;text-decoration:none;border-bottom:1px solid #6B7C3E;padding-bottom:4px;transition:color 0.2s,border-color 0.2s" onmouseover="this.style.color='#6B7C3E'" onmouseout="this.style.color='#0D1107'">
+          Get in touch &rarr;
+        </a>
+      </div>
+
+      <div class="story-img-wrap overflow-hidden sr sr-d2" style="height:520px">
+        <img class="story-img" src="burger.png" alt="Inside Olives Restaurant, Kampala" style="object-position:center 40%">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FULL-WIDTH FOOD SHOT ══════════════════ -->
+  <div class="full-bleed" style="height:60vh">
+    <img class="full-bleed-img" src="platter2.png" alt="Signature dish at Olives" style="object-position:center 40%">
+    <div class="full-bleed-content text-center px-6">
+      <p class="sr" style="font-family:'Cormorant Garant',serif;font-weight:300;font-style:italic;font-size:clamp(32px,4vw,64px);color:#F5F0E8;letter-spacing:-0.01em;max-width:700px;line-height:1.2">
+        "Food rooted in soil, finished with intention."
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MENU ══════════════════ -->
+  <section id="menu" class="py-32">
+    <div class="max-w-7xl mx-auto px-8">
+      <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+        <div>
+          <span class="section-label sr">From Our Kitchen</span>
+          <h2 class="display-serif sr sr-d1" style="font-size:clamp(36px,4vw,60px);color:#F5F0E8">Signature Dishes</h2>
+        </div>
+        <a href="menu.html" class="sr sr-d2" style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(245,240,232,0.55);text-decoration:none;border-bottom:1px solid rgba(107,124,62,0.4);padding-bottom:3px;transition:color 0.2s,border-color 0.2s" onmouseover="this.style.color='#C4A35A';this.style.borderColor='#C4A35A'" onmouseout="this.style.color='rgba(245,240,232,0.55)';this.style.borderColor='rgba(107,124,62,0.4)'">
+          Full Menu &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-0.5">
+
+        <div class="dish-card sr">
+          <div style="overflow:hidden">
+            <img class="dish-img" src="platter1.png" alt="Grilled Nile Perch" style="object-position:center 35%">
+          </div>
+          <div style="padding:1.5rem 0;background:#0F130A">
+            <span class="dish-label section-label" style="margin-bottom:0.5rem">Lake Victoria</span>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:#F5F0E8;margin-bottom:0.5rem">Grilled Nile Perch</h3>
+            <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6">Olive tapenade, roasted vine tomatoes, salsa verde, grilled flatbread.</p>
+            <p style="margin-top:1rem;font-family:'Cormorant Garant',serif;font-size:1.125rem;color:#C4A35A">UGX 68,000</p>
+          </div>
+        </div>
+
+        <div class="dish-card sr sr-d1">
+          <div style="overflow:hidden">
+            <img class="dish-img" src="starter2.png" alt="Braised Kampala Goat" style="object-position:center 45%">
+          </div>
+          <div style="padding:1.5rem 0;background:#0F130A">
+            <span class="dish-label section-label" style="margin-bottom:0.5rem">From the Pasture</span>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:#F5F0E8;margin-bottom:0.5rem">Slow-Braised Goat</h3>
+            <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6">Herbed couscous, harissa-roasted carrots, preserved lemon yoghurt.</p>
+            <p style="margin-top:1rem;font-family:'Cormorant Garant',serif;font-size:1.125rem;color:#C4A35A">UGX 72,000</p>
+          </div>
+        </div>
+
+        <div class="dish-card sr sr-d2">
+          <div style="overflow:hidden">
+            <img class="dish-img" src="salad.png" alt="Garden Mezze Platter" style="object-position:center 50%">
+          </div>
+          <div style="padding:1.5rem 0;background:#0F130A">
+            <span class="dish-label section-label" style="margin-bottom:0.5rem">Garden Table</span>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:#F5F0E8;margin-bottom:0.5rem">Garden Mezze</h3>
+            <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6">Hummus, baba ghanoush, groundnut dip, za'atar pita, seasonal pickles.</p>
+            <p style="margin-top:1rem;font-family:'Cormorant Garant',serif;font-size:1.125rem;color:#C4A35A">UGX 48,000</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-0.5 mt-0.5">
+
+        <div class="dish-card sr sr-d1">
+          <div style="overflow:hidden">
+            <img class="dish-img" src="starter1.png" alt="Duck Breast" style="aspect-ratio:2/1;object-position:center 45%">
+          </div>
+          <div style="padding:1.5rem 0;background:#0F130A">
+            <span class="dish-label section-label" style="margin-bottom:0.5rem">Chef's Special</span>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:#F5F0E8;margin-bottom:0.5rem">Pan-Seared Duck, Tamarind Glaze</h3>
+            <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6">Wild rice pilaf, caramelised shallots, roasted plum, micro-herb garnish.</p>
+            <p style="margin-top:1rem;font-family:'Cormorant Garant',serif;font-size:1.125rem;color:#C4A35A">UGX 85,000</p>
+          </div>
+        </div>
+
+        <div class="dish-card sr sr-d2">
+          <div style="overflow:hidden">
+            <img class="dish-img" src="veg.png" alt="Wood-Fired Flatbread" style="aspect-ratio:2/1;object-position:center 50%">
+          </div>
+          <div style="padding:1.5rem 0;background:#0F130A">
+            <span class="dish-label section-label" style="margin-bottom:0.5rem">From the Fire</span>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:#F5F0E8;margin-bottom:0.5rem">Wood-Fired Flatbreads</h3>
+            <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6">Labneh, chilli oil, charred olives, fresh herbs. Two varieties daily.</p>
+            <p style="margin-top:1rem;font-family:'Cormorant Garant',serif;font-size:1.125rem;color:#C4A35A">UGX 32,000</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════ ATMOSPHERE ══════════════════ -->
+  <div class="full-bleed" style="height:70vh">
+    <img class="full-bleed-img" src="pink_panther.png" alt="Olives Restaurant atmosphere, Kampala" style="filter:brightness(0.45) saturate(0.7);object-position:center 30%">
+    <div class="full-bleed-content text-center px-6" style="max-width:760px">
+      <span class="section-label sr" style="color:#C4A35A">The Space</span>
+      <h2 class="display-serif sr sr-d1" style="font-size:clamp(40px,5vw,76px);color:#F5F0E8;margin-bottom:1.5rem;letter-spacing:-0.02em">
+        A garden table<br>
+        <em style="font-style:italic;color:rgba(245,240,232,0.7)">in the city's heart.</em>
+      </h2>
+      <p class="sr sr-d2" style="color:rgba(245,240,232,0.6);font-size:1rem;line-height:1.7;max-width:520px;margin:0 auto">
+        Dine beneath old fig trees or inside our stone-walled dining room. Olives seats 80 guests across the garden terrace, the bar, and the private dining room.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════ BAR ══════════════════ -->
+  <section id="bar">
+    <div class="max-w-7xl mx-auto px-8 py-32 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+
+      <div class="grid grid-cols-2 gap-3 sr">
+        <div class="bar-img-wrap">
+          <img class="bar-img" src="margarita.png" alt="Bar at Olives" style="object-position:center 40%">
+        </div>
+        <div class="bar-img-wrap" style="margin-top:3rem">
+          <img class="bar-img" src="long_island_iced_tea.png" alt="Cocktails at Olives Bar" style="object-position:center 38%">
+        </div>
+      </div>
+
+      <div>
+        <span class="section-label sr" style="color:#C4A35A">The Bar</span>
+        <h2 class="display-serif sr sr-d1" style="font-size:clamp(40px,4.5vw,68px);color:#0D1107;line-height:1.05;margin-bottom:2rem">
+          Evenings that<br>stretch long.
+        </h2>
+        <p class="sr sr-d2" style="color:#3a4030;font-size:1rem;line-height:1.75;margin-bottom:1.25rem">
+          The Olives bar draws from Uganda's botanical abundance — local gins infused with African botanicals, freshly pressed fruit, and herbs from our kitchen garden. Our bartenders work the same philosophy as our chefs: ingredients first, ego last.
+        </p>
+        <p class="sr sr-d2" style="color:#3a4030;font-size:1rem;line-height:1.75;margin-bottom:2.5rem">
+          The bar opens at 3 pm and runs until the last guests leave. Weekend evenings feature live acoustic sets from Kampala's musicians.
+        </p>
+
+        <div class="sr sr-d3">
+          <div style="border-top:1px solid rgba(13,17,7,0.15);padding-top:2rem">
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.25rem;font-weight:400;color:#0D1107;margin-bottom:1.25rem;letter-spacing:0.02em">Tonight's Specials</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.85rem">
+              <li style="display:flex;justify-content:space-between;align-items:baseline;font-size:0.9rem;color:#3a4030;border-bottom:1px solid rgba(13,17,7,0.08);padding-bottom:0.75rem">
+                <span><strong style="font-weight:500;color:#0D1107">Passion Fruit Aperol Spritz</strong> — Aperol, Prosecco, fresh passion fruit</span>
+                <span style="color:#6B7C3E;font-family:'Cormorant Garant',serif;font-size:1rem;white-space:nowrap;margin-left:1rem">28k</span>
+              </li>
+              <li style="display:flex;justify-content:space-between;align-items:baseline;font-size:0.9rem;color:#3a4030;border-bottom:1px solid rgba(13,17,7,0.08);padding-bottom:0.75rem">
+                <span><strong style="font-weight:500;color:#0D1107">Uganda Gin & Tonic</strong> — Ugajen gin, tonic, lemon grass, cucumber</span>
+                <span style="color:#6B7C3E;font-family:'Cormorant Garant',serif;font-size:1rem;white-space:nowrap;margin-left:1rem">26k</span>
+              </li>
+              <li style="display:flex;justify-content:space-between;align-items:baseline;font-size:0.9rem;color:#3a4030">
+                <span><strong style="font-weight:500;color:#0D1107">Mango Mojito</strong> — White rum, fresh mango, mint, lime, soda</span>
+                <span style="color:#6B7C3E;font-family:'Cormorant Garant',serif;font-size:1rem;white-space:nowrap;margin-left:1rem">24k</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════ QUOTE / PULL ══════════════════ -->
+  <div class="quote-section py-28 px-8 text-center" style="background:radial-gradient(ellipse 60% 70% at 50% 50%, rgba(107,124,62,0.1) 0%, transparent 80%), #0D1107">
+    <p class="display-serif-italic sr" style="font-size:clamp(28px,4vw,56px);color:#F5F0E8;max-width:780px;margin:0 auto;line-height:1.25;letter-spacing:-0.01em">
+      "Not every restaurant in Kampala remembers that food is also<br>
+      <span style="color:#6B7C3E">ceremony</span>, <span style="color:#6B7C3E">conversation</span>,&nbsp;and&nbsp;place."
+    </p>
+    <p class="sr sr-d2" style="margin-top:2rem;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(245,240,232,0.35)">Chef &amp; Founder, Olives Kampala</p>
+  </div>
+
+  <!-- ══════════════════ HOURS & INFO ══════════════════ -->
+  <section style="background:#F5F0E8;color:#0D1107" class="py-24">
+    <div class="max-w-5xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-20">
+
+      <div>
+        <span class="section-label sr" style="color:#C4A35A">Hours</span>
+        <h2 class="display-serif sr sr-d1" style="font-size:2.5rem;color:#0D1107;margin-bottom:2rem">When we're open</h2>
+        <div class="sr sr-d2">
+          <div class="hours-row"><span style="color:#3a4030">Monday – Thursday</span><span style="font-weight:500">12 pm – 10 pm</span></div>
+          <div class="hours-row"><span style="color:#3a4030">Friday</span><span style="font-weight:500">12 pm – 11 pm</span></div>
+          <div class="hours-row"><span style="color:#3a4030">Saturday</span><span style="font-weight:500">11 am – 11 pm</span></div>
+          <div class="hours-row"><span style="color:#3a4030">Sunday</span><span style="font-weight:500">11 am – 9 pm</span></div>
+        </div>
+        <p class="sr sr-d3" style="margin-top:2rem;font-size:0.8rem;color:#6a7060;line-height:1.6">
+          Bar opens at 3 pm daily · Last food orders 45 minutes before closing · Private dining available by prior arrangement
+        </p>
+      </div>
+
+      <div>
+        <span class="section-label sr" style="color:#C4A35A">Find Us</span>
+        <h2 class="display-serif sr sr-d1" style="font-size:2.5rem;color:#0D1107;margin-bottom:2rem">Kampala</h2>
+        <div class="sr sr-d2">
+          <p style="font-size:1rem;line-height:1.8;color:#3a4030">
+            63 Naguru Drive<br>
+            Kampala, Uganda
+          </p>
+          <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.5rem">
+            <a href="tel:+256312345678" style="font-size:0.875rem;color:#6B7C3E;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#3F4E20'" onmouseout="this.style.color='#6B7C3E'">+256 31 234 5678</a>
+            <a href="mailto:hello@oliveskampala.com" style="font-size:0.875rem;color:#6B7C3E;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#3F4E20'" onmouseout="this.style.color='#6B7C3E'">hello@oliveskampala.com</a>
+          </div>
+          <div style="margin-top:1.75rem;display:flex;gap:1.5rem">
+            <a href="https://www.instagram.com/oliveskampala/?hl=en" target="_blank" rel="noopener" class="footer-link" style="color:#3a4030">Instagram</a>
+            <a href="https://www.tiktok.com/@oliveskampala" target="_blank" rel="noopener" class="footer-link" style="color:#3a4030">TikTok</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════ CONTACT & REVIEWS ══════════════════ -->
+  <section id="contact"
+    style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(107,124,62,0.12) 0%, transparent 70%), #1A2210; padding: 7rem 2rem">
+    <div style="max-width:960px;margin:0 auto">
+
+      <div style="text-align:center;margin-bottom:4.5rem">
+        <span class="section-label sr" style="display:block;margin-bottom:1rem">63 Naguru Drive · Kampala</span>
+        <h2 class="display-serif sr sr-d1" style="font-size:clamp(40px,5vw,72px);color:#F5F0E8;margin-bottom:0">
+          Get in Touch.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+
+        <!-- Contact + Social -->
+        <div class="sr sr-d2">
+
+          <div style="margin-bottom:2.5rem">
+            <p style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#C4A35A;margin:0 0 0.65rem">Phone</p>
+            <a href="tel:+256702611883"
+              style="font-family:'Cormorant Garant',serif;font-size:1.9rem;font-weight:400;color:#F5F0E8;text-decoration:none;letter-spacing:-0.01em;transition:color 0.2s"
+              onmouseover="this.style.color='#C4A35A'" onmouseout="this.style.color='#F5F0E8'">
+              +256 702 611883
+            </a>
+          </div>
+
+          <div style="margin-bottom:2.5rem">
+            <p style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#C4A35A;margin:0 0 0.65rem">Location</p>
+            <p style="font-family:'Cormorant Garant',serif;font-size:1.3rem;color:rgba(245,240,232,0.72);line-height:1.55;margin:0">
+              63 Naguru Drive<br>Kampala, Uganda
+            </p>
+          </div>
+
+          <div>
+            <p style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#C4A35A;margin:0 0 1rem">Follow Us</p>
+            <div style="display:flex;flex-direction:column;gap:0.9rem">
+              <a href="https://www.instagram.com/oliveskampala/?hl=en" target="_blank" rel="noopener"
+                style="display:flex;align-items:center;gap:0.85rem;color:rgba(245,240,232,0.55);text-decoration:none;font-size:0.82rem;letter-spacing:0.06em;transition:color 0.2s"
+                onmouseover="this.style.color='#F5F0E8'" onmouseout="this.style.color='rgba(245,240,232,0.55)'">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                @oliveskampala
+              </a>
+              <a href="https://www.tiktok.com/@oliveskampala" target="_blank" rel="noopener"
+                style="display:flex;align-items:center;gap:0.85rem;color:rgba(245,240,232,0.55);text-decoration:none;font-size:0.82rem;letter-spacing:0.06em;transition:color 0.2s"
+                onmouseover="this.style.color='#F5F0E8'" onmouseout="this.style.color='rgba(245,240,232,0.55)'">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                @oliveskampala
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TripAdvisor Review Card -->
+        <div class="sr sr-d3">
+          <a href="https://www.tripadvisor.com/UserReviewEdit-g293841-d11444193-Olives_Restaurant_Bar-Kampala_Central_Region.html" target="_blank" rel="noopener"
+            style="display:block;background:rgba(245,240,232,0.04);border:1px solid rgba(107,124,62,0.25);padding:2.75rem 2.25rem;text-align:center;text-decoration:none;transition:border-color 0.2s,background 0.2s"
+            onmouseover="this.style.borderColor='rgba(0,170,108,0.45)';this.style.background='rgba(0,170,108,0.06)'"
+            onmouseout="this.style.borderColor='rgba(107,124,62,0.25)';this.style.background='rgba(245,240,232,0.04)'">
+
+            <div style="width:54px;height:54px;background:#00AA6C;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="9" cy="15" r="5" fill="white" opacity="0.9"/>
+                <circle cx="19" cy="15" r="5" fill="white" opacity="0.9"/>
+                <circle cx="9" cy="15" r="2.8" fill="#00AA6C"/>
+                <circle cx="19" cy="15" r="2.8" fill="#00AA6C"/>
+                <circle cx="9" cy="15" r="1.3" fill="white"/>
+                <circle cx="19" cy="15" r="1.3" fill="white"/>
+                <path d="M6 21 Q14 25 22 21" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <p style="font-size:0.52rem;letter-spacing:0.28em;text-transform:uppercase;color:#00AA6C;margin:0 0 0.65rem">TripAdvisor</p>
+            <h3 style="font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:400;color:#F5F0E8;margin:0 0 0.75rem;letter-spacing:-0.01em">
+              Loved your visit?
+            </h3>
+            <p style="font-size:0.8rem;color:rgba(245,240,232,0.42);line-height:1.72;margin:0 0 1.75rem">
+              Your review goes directly to TripAdvisor and helps other guests discover Olives.
+            </p>
+
+            <div style="display:inline-flex;align-items:center;gap:0.6rem;background:#00AA6C;color:#fff;padding:0.85rem 2rem;font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;border-radius:2px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Write a Review
+            </div>
+
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer class="py-14 px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8 mb-10">
+        <img src="logo.png" alt="Olives Restaurant & Bar" style="height:52px;opacity:0.85;filter:drop-shadow(0 0 1px rgba(245,240,232,0.3))">
+        <nav style="display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center">
+          <a href="#story" class="footer-link">Our Story</a>
+          <a href="#menu"  class="footer-link">Menu</a>
+          <a href="#bar"   class="footer-link">Bar</a>
+          <a href="#contact" class="footer-link">Contact</a>
+          <a href="#"      class="footer-link">Private Dining</a>
+          <a href="#"      class="footer-link">Careers</a>
+        </nav>
+        <div style="display:flex;gap:1.25rem">
+          <a href="https://www.instagram.com/oliveskampala/?hl=en" target="_blank" rel="noopener" class="footer-link" aria-label="Instagram">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@oliveskampala" target="_blank" rel="noopener" class="footer-link" aria-label="TikTok">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(107,124,62,0.15);padding-top:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;text-align:center">
+        <p style="font-size:0.72rem;color:rgba(245,240,232,0.3);letter-spacing:0.1em">
+          © 2025 Olives Restaurant &amp; Bar · 63 Naguru Drive, Kampala, Uganda
+        </p>
+        <p style="font-size:0.68rem;color:rgba(245,240,232,0.2);letter-spacing:0.06em">
+          Phone: <a href="tel:+256702611883" style="color:inherit;text-decoration:none">+256 702 611883</a>
+          &ensp;·&ensp;
+          <a href="mailto:hello@oliveskampala.com" style="color:inherit;text-decoration:none">hello@oliveskampala.com</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════ SCRIPTS ══════════════════ -->
+  <script>
+    window.addEventListener('load', () => {
+      const logo   = document.getElementById('curtain-logo');
+      const curtain = document.getElementById('curtain');
+
+      // Phase 1 — Logo blooms into view at centre of dark screen
+      setTimeout(() => logo.classList.add('show'), 250);
+
+      // Phase 2 — Screen splits through the logo, logo fades out
+      setTimeout(() => {
+        curtain.classList.add('open');
+        logo.classList.remove('show');
+        logo.classList.add('exit');
+        setTimeout(() => { logo.style.display = 'none'; }, 500);
+      }, 1900);
+
+      // Phase 3 — Hero content arrives as the split completes
+      setTimeout(() => {
+        document.getElementById('nav').classList.add('show');
+        ['hEye','hL1','hL2','hRule','hSub','hScroll'].forEach(id => {
+          document.getElementById(id)?.classList.add('on');
+        });
+      }, 2500);
+    });
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('solid', window.scrollY > 80);
+    }, { passive: true });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.sr').forEach(el => io.observe(el));
+
+    // Strip white background from logo PNG so it renders transparently on any bg
+    function removeWhiteBg(img) {
+      try {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const px = ctx.getImageData(0, 0, c.width, c.height);
+        for (let i = 0; i < px.data.length; i += 4) {
+          const r = px.data[i], g = px.data[i+1], b = px.data[i+2];
+          if (r > 230 && g > 230 && b > 230) px.data[i+3] = 0;
+        }
+        ctx.putImageData(px, 0, 0);
+        img.src = c.toDataURL('image/png');
+      } catch(e) {}
+    }
+    document.querySelectorAll('img[src="logo.png"]').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) removeWhiteBg(img);
+      else img.addEventListener('load', () => removeWhiteBg(img), { once: true });
+    });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Olives Restaurant & Bar, Kampala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        olive: '#6B7C3E', 'olive-dk': '#3F4E20', 'olive-md': '#2A3318', 'olive-lt': '#8BA059',
+        forest: '#0D1107', cream: '#F5F0E8', 'cream-dk': '#EBE4D8', gold: '#C4A35A', sage: '#5C6B35',
+      }, fontFamily: { display: ['"Cormorant Garant"', 'serif'], body: ['"DM Sans"', 'sans-serif'] }}}
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #0D1107; color: #F5F0E8; min-height: 100vh; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 4rem;
+      background: rgba(13,17,7,0.96); backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(107,124,62,0.18);
+    }
+    .nav-link {
+      font-size: 0.67rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,240,232,0.55); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: #F5F0E8; }
+    .nav-link.active { color: #C4A35A; }
+    .nav-logo img { height: 44px; filter: drop-shadow(0 1px 6px rgba(0,0,0,0.5)); }
+    .nav-cta {
+      font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #0D1107; background: #C4A35A; text-decoration: none;
+      padding: 0.65rem 1.5rem; border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+    .nav-cta:hover { background: #D4B36A; }
+
+    /* ── PAGE INTRO ── */
+    .page-intro {
+      padding: 9rem 4rem 5.5rem;
+      text-align: center;
+      background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(107,124,62,0.13) 0%, transparent 75%);
+      border-bottom: 1px solid rgba(107,124,62,0.15);
+    }
+
+    /* ── TAB BAR ── */
+    .tab-bar {
+      position: sticky; top: 68px; z-index: 400;
+      background: rgba(13,17,7,0.97); backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(107,124,62,0.18);
+      display: flex;
+    }
+    .tab-btn {
+      flex: 1; padding: 1.15rem 1rem; cursor: pointer;
+      font-size: 0.64rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(245,240,232,0.38); background: transparent; border: none;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .tab-btn:hover { color: rgba(245,240,232,0.72); }
+    .tab-btn.active { color: #C4A35A; border-bottom-color: #C4A35A; }
+
+    /* ── PANELS ── */
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+    .panel-inner { max-width: 820px; margin: 0 auto; padding: 4.5rem 4rem 8rem; }
+
+    /* ── SECTION HEADER ── */
+    .cat-label {
+      font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #C4A35A; display: block; margin-top: 4rem; margin-bottom: 0.6rem;
+    }
+    .cat-label:first-child { margin-top: 0; }
+    .cat-rule {
+      height: 1px; width: 100%; margin-bottom: 0.25rem;
+      background: linear-gradient(to right, rgba(196,163,90,0.35), rgba(107,124,62,0.08));
+    }
+
+    /* ── MENU ROW ── */
+    .menu-row {
+      display: flex; align-items: baseline; gap: 2rem;
+      padding: 1.15rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.055);
+    }
+    .menu-row:last-child { border-bottom: none; }
+    .row-body { flex: 1; min-width: 0; }
+    .row-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.2rem; font-weight: 500; color: #F5F0E8;
+      letter-spacing: -0.01em;
+      display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;
+    }
+    .row-desc {
+      font-size: 0.77rem; color: rgba(245,240,232,0.38);
+      line-height: 1.65; margin-top: 0.22rem;
+    }
+    .row-price {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.05rem; font-weight: 500; color: #C4A35A;
+      white-space: nowrap; letter-spacing: 0.02em; flex-shrink: 0;
+    }
+    .chef-badge {
+      font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #6B7C3E; border: 1px solid rgba(107,124,62,0.5);
+      padding: 0.1rem 0.38rem; border-radius: 2px; line-height: 2;
+    }
+
+    /* ── PIZZA GRID ── */
+    .pizza-grid { width: 100%; }
+    .pizza-grid-head {
+      display: grid; grid-template-columns: 1fr auto auto auto;
+      gap: 2rem; padding: 0 0 0.65rem;
+      border-bottom: 1px solid rgba(107,124,62,0.25);
+      margin-bottom: 0.15rem;
+    }
+    .pizza-grid-head span {
+      font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(245,240,232,0.28); text-align: right;
+    }
+    .pizza-grid-head span:first-child { text-align: left; }
+    .pizza-row {
+      display: grid; grid-template-columns: 1fr auto auto auto;
+      gap: 2rem; padding: 1rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.055);
+      align-items: baseline;
+    }
+    .pizza-row:last-child { border-bottom: none; }
+    .pizza-row-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.15rem; font-weight: 500; color: #F5F0E8;
+    }
+    .pizza-row-name small {
+      display: block; font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem; color: rgba(245,240,232,0.35);
+      font-weight: 300; margin-top: 0.15rem;
+    }
+    .pizza-price {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1rem; color: #C4A35A; text-align: right;
+    }
+    .pizza-price.dim { color: rgba(196,163,90,0.55); }
+
+    /* ── NOTE ── */
+    .menu-note {
+      border-left: 2px solid rgba(107,124,62,0.4);
+      background: rgba(107,124,62,0.07);
+      padding: 1rem 1.25rem; margin-top: 2.5rem;
+      font-size: 0.76rem; color: rgba(245,240,232,0.42); line-height: 1.75;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0A0F06;
+      border-top: 1px solid rgba(107,124,62,0.15);
+      padding: 3.5rem 4rem;
+    }
+    .footer-link {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(245,240,232,0.38); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover { color: rgba(245,240,232,0.75); }
+
+    /* ── SCROLL REVEAL ── */
+    .sr { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .sr.in { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      #nav { padding: 1rem 1.5rem; }
+      #nav .nav-links { display: none; }
+      .page-intro { padding: 7rem 1.5rem 4rem; }
+      .panel-inner { padding: 3rem 1.5rem 6rem; }
+      footer { padding: 3rem 1.5rem; }
+      .pizza-grid-head, .pizza-row { grid-template-columns: 1fr auto auto auto; gap: 0.75rem; }
+    }
+
+    /* ── PIZZA 2-COL LAYOUT ── */
+    .pizza-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.5rem; }
+    .pizza-item { padding: 0.8rem 0; border-bottom: 1px solid rgba(245,240,232,0.055); }
+    .pizza-item:last-child { border-bottom: none; }
+    .pizza-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .pizza-item-name {
+      font-family: 'Cormorant Garant', serif; font-size: 1.05rem; font-weight: 500; color: #F5F0E8;
+      display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; line-height: 1.3;
+    }
+    .pizza-item-desc { font-size: 0.68rem; color: rgba(245,240,232,0.33); line-height: 1.5; margin-top: 0.1rem; }
+    .pizza-pl { font-family: 'Cormorant Garant', serif; font-size: 0.9rem; color: #C4A35A; text-align: right; white-space: nowrap; flex-shrink: 0; }
+    .pizza-pm { display: block; font-size: 0.76rem; color: rgba(196,163,90,0.4); margin-top: 0.1rem; }
+    .pizza-band { position: relative; width: 100%; overflow: hidden; background: #030704; }
+    .pizza-band img {
+      position: absolute; top: -15%; left: 0;
+      width: 100%; height: 130%;
+      object-fit: cover; display: block;
+      opacity: 0.65; filter: saturate(0.85) brightness(0.7);
+      will-change: transform;
+    }
+    .pizza-band-overlay { position: absolute; inset: 0; }
+    .pizza-wide { max-width: 1060px; margin: 0 auto; }
+    @media (max-width: 720px) {
+      .pizza-2col { grid-template-columns: 1fr; }
+      .pizza-wide { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+    }
+
+    /* ── DRINK HERO BAND (shorter than food bands) ── */
+    .drink-band {
+      position: relative; width: 100%; overflow: hidden;
+      background: #030704; height: 280px;
+    }
+    .drink-band img {
+      position: absolute; top: -10%; left: 0;
+      width: 100%; height: 120%;
+      object-fit: cover; display: block;
+      opacity: 0.6; filter: saturate(0.9) brightness(0.65);
+      will-change: transform;
+    }
+    .drink-band-overlay { position: absolute; inset: 0; }
+
+    /* ── SPIRITS TABLE (Name | Bottle | Tot) ── */
+    .spirits-head {
+      display: grid; grid-template-columns: 1fr 60px 50px;
+      gap: 0.75rem; padding: 0 0 0.5rem;
+      border-bottom: 1px solid rgba(107,124,62,0.28);
+    }
+    .spirits-head span {
+      font-size: 0.52rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(245,240,232,0.28); text-align: right;
+    }
+    .spirits-head span:first-child { text-align: left; }
+    .spirits-row {
+      display: grid; grid-template-columns: 1fr 60px 50px;
+      gap: 0.75rem; padding: 0.78rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.05);
+      align-items: baseline;
+    }
+    .spirits-row:last-child { border-bottom: none; }
+    .spirits-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.08rem; font-weight: 500; color: #F5F0E8;
+    }
+    .spirits-price {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 0.95rem; color: #C4A35A;
+      text-align: right; white-space: nowrap;
+    }
+    .spirits-price.dim { color: rgba(196,163,90,0.45); }
+
+    /* ── WINE 2-COL ── */
+    .wine-2col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0 4rem;
+    }
+    @media (max-width: 720px) { .wine-2col { grid-template-columns: 1fr; } }
+
+    /* ── COFFEE TABLE (Name | Single | Double) ── */
+    .coffee-head {
+      display: grid; grid-template-columns: 1fr 46px 46px;
+      gap: 0.75rem; padding: 0 0 0.5rem;
+      border-bottom: 1px solid rgba(107,124,62,0.28);
+    }
+    .coffee-head span {
+      font-size: 0.52rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(245,240,232,0.28); text-align: right;
+    }
+    .coffee-head span:first-child { text-align: left; }
+    .coffee-row {
+      display: grid; grid-template-columns: 1fr 46px 46px;
+      gap: 0.75rem; padding: 0.72rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.05);
+      align-items: baseline;
+    }
+    .coffee-row:last-child { border-bottom: none; }
+
+    /* ── SHOOTERS / TOWERS — compact list ── */
+    .compact-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 0.78rem 0; border-bottom: 1px solid rgba(245,240,232,0.055);
+      gap: 1.5rem;
+    }
+    .compact-row:last-child { border-bottom: none; }
+    .compact-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 1.05rem; font-weight: 500; color: #F5F0E8;
+    }
+    .compact-sub {
+      font-size: 0.72rem; color: rgba(245,240,232,0.35);
+      margin-top: 0.1rem;
+    }
+
+    /* ── DRINKS 2-COL for compact sub-sections ── */
+    .drinks-2col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0 3.5rem;
+    }
+    @media (max-width: 720px) { .drinks-2col { grid-template-columns: 1fr; } }
+
+    /* ── PORTRAIT float: drink photo inside content area ── */
+    .drink-portrait-float {
+      float: right; width: 190px; margin: 0 0 1.5rem 2.5rem;
+    }
+    .drink-portrait-float img {
+      width: 100%; height: 270px;
+      object-fit: cover; object-position: center 40%;
+      display: block; filter: saturate(0.88) brightness(0.78);
+    }
+    .drink-portrait-float figcaption {
+      font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(196,163,90,0.6); text-align: center; padding: 0.4rem 0 0;
+    }
+
+    /* ── 2-COL SECTION: image header + items list ── */
+    .drink-img-col-photo {
+      position: relative; overflow: hidden; margin: 0 0 1.5rem;
+      height: 340px;
+    }
+    .drink-img-col-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center center;
+      display: block; filter: saturate(0.88) brightness(0.72);
+    }
+    .drink-img-col-photo figcaption {
+      position: absolute; bottom: 0.7rem; left: 0; right: 0;
+      text-align: center; font-size: 0.5rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(196,163,90,0.85);
+      text-shadow: 0 1px 5px rgba(0,0,0,0.95);
+    }
+
+    /* ── BOTTLE GALLERY for wines ── */
+    .bottle-gallery {
+      display: flex; gap: 1rem; padding: 1.5rem 0 2rem;
+      align-items: flex-end; justify-content: center;
+      border-bottom: 1px solid rgba(107,124,62,0.18);
+      margin-bottom: 2rem;
+    }
+    .bottle-gallery-item { flex: 1; max-width: 150px; text-align: center; }
+    .bottle-gallery-item img {
+      height: 195px; width: auto; max-width: 100%;
+      object-fit: contain; filter: brightness(0.82) saturate(0.88);
+      display: block; margin: 0 auto;
+    }
+    .bottle-name {
+      font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(245,240,232,0.3); margin-top: 0.5rem;
+    }
+
+    /* ── SPIRIT accent: floating bottle in dark sections ── */
+    .spirit-accent {
+      float: right; width: 120px; margin: 0 0 1.5rem 1.5rem;
+    }
+    .spirit-accent img {
+      width: 100%; height: 210px;
+      object-fit: contain; object-position: center;
+      filter: brightness(0.75) saturate(0.85); display: block;
+    }
+
+    @media (max-width: 720px) {
+      .drink-portrait-float { float: none; width: 100%; margin: 0 0 1.5rem; }
+      .spirit-accent { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════ NAV ══════════════════ -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Olives Restaurant &amp; Bar">
+    </a>
+    <div class="nav-links" style="display:flex;gap:2.5rem;align-items:center">
+      <a href="index.html#story"   class="nav-link">Our Story</a>
+      <a href="menu.html"          class="nav-link active">Menu</a>
+      <a href="index.html#bar"     class="nav-link">Bar</a>
+      <a href="index.html#contact" class="nav-link">Contact</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">Contact Us</a>
+  </nav>
+
+  <!-- ══════════════════ PAGE INTRO ══════════════════ -->
+  <header class="page-intro">
+    <span style="font-size:0.6rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A;display:block;margin-bottom:1.25rem">63 Naguru Drive · Kampala</span>
+    <h1 style="font-family:'Cormorant Garant',serif;font-size:clamp(54px,7.5vw,108px);font-weight:400;font-style:italic;line-height:0.92;letter-spacing:-0.02em;color:#F5F0E8">
+      The Menu
+    </h1>
+    <p style="margin-top:1.75rem;font-size:0.8rem;color:rgba(245,240,232,0.38);letter-spacing:0.06em;max-width:360px;margin-left:auto;margin-right:auto;line-height:1.85;text-transform:uppercase">
+      Seasonal · Mediterranean · East African
+    </p>
+  </header>
+
+  <!-- ══════════════════ TAB BAR ══════════════════ -->
+  <div class="tab-bar" role="tablist" aria-label="Menu categories">
+    <button class="tab-btn active" data-tab="food"      role="tab" aria-selected="true">Food</button>
+    <button class="tab-btn"        data-tab="breakfast" role="tab" aria-selected="false">Breakfast</button>
+    <button class="tab-btn"        data-tab="pizza"     role="tab" aria-selected="false">Pizza</button>
+    <button class="tab-btn"        data-tab="drinks"    role="tab" aria-selected="false">Drinks</button>
+    <button class="tab-btn"        data-tab="desserts"  role="tab" aria-selected="false">Desserts</button>
+  </div>
+
+  <!-- ══════════════════ PANELS ══════════════════ -->
+  <main>
+
+    <!-- ─── FOOD ─── -->
+    <section class="menu-panel active" id="tab-food" role="tabpanel">
+
+      <!-- HERO BAND -->
+      <div class="pizza-band" style="height:520px">
+        <img src="salad.png" alt="Food at Olives" style="object-position:center 40%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.3),rgba(13,17,7,0.82))"></div>
+        <div style="position:absolute;top:-8px;right:-8px;pointer-events:none">
+          <svg width="260" height="190" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.22" style="transform:scaleX(-1)">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2.5rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Fresh &amp; Mediterranean · Kampala</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(42px,5vw,72px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.3rem;line-height:1">Food</h2>
+        </div>
+      </div>
+
+      <!-- Soups + Salads -->
+      <div class="panel-inner" style="padding-bottom:3rem">
+
+        <span class="cat-label sr">Soups</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Thai Coconut Chicken Soup</div></div>
+          <div class="row-price">20</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Roasted Pumpkin Soup</div></div>
+          <div class="row-price">18</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Hot &amp; Sour Chicken Noodle Soup</div></div>
+          <div class="row-price">18</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Creamy Mushroom Soup</div></div>
+          <div class="row-price">17</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Hot &amp; Sour Veg Noodle Soup</div></div>
+          <div class="row-price">18</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Roasted Tomato Basil Soup</div></div>
+          <div class="row-price">18</div>
+        </div>
+
+        <span class="cat-label sr">Salads</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Olives Special Salad <span class="chef-badge">Chef's Pick</span></div>
+          </div>
+          <div class="row-price">55</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Mediterranean Chicken Kebab Salad</div></div>
+          <div class="row-price">28</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Grilled Chicken Couscous Salad</div></div>
+          <div class="row-price">35</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Five Green Salad</div></div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Tuna Salad</div></div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Thai Beef Salad <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(Nam Tye)</span></div>
+          </div>
+          <div class="row-price">53</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Som Tum</div></div>
+          <div class="row-price">27</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Grilled Vegetable Couscous Salad</div></div>
+          <div class="row-price">35</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Caesar Salad</div></div>
+          <div class="row-price">26</div>
+        </div>
+      </div>
+
+      <!-- BAND — Vegetarian Starters -->
+      <div class="pizza-band" style="height:420px">
+        <img src="starter1.png" alt="Starters at Olives" style="object-position:center 50%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.72),rgba(13,17,7,0.35),rgba(13,17,7,0.72))"></div>
+        <div style="position:absolute;bottom:-8px;left:-8px;pointer-events:none">
+          <svg width="220" height="160" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.2">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Vegetarian Starters</span>
+        </div>
+      </div>
+
+      <!-- Starters — Vegetarian -->
+      <div class="panel-inner" style="padding-top:3.5rem;padding-bottom:3rem">
+
+        <span class="cat-label sr">Starters — Vegetarian</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Paneer Tikka</div></div>
+          <div class="row-price">25</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Chilli Paneer</div></div>
+          <div class="row-price">25</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Potato Twisters <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(3 sticks)</span></div>
+          </div>
+          <div class="row-price">20</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Thai Vegetable Spring Rolls</div></div>
+          <div class="row-price">22</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Masala Chips</div></div>
+          <div class="row-price">20</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Plain Chips</div></div>
+          <div class="row-price">18</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Vegetable Samosa <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">13</div>
+        </div>
+      </div>
+
+      <!-- BAND — Chicken & Meat Starters -->
+      <div class="pizza-band" style="height:420px">
+        <img src="starter2.png" alt="Chicken starters at Olives" style="object-position:center 45%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.72),rgba(13,17,7,0.35),rgba(13,17,7,0.72))"></div>
+        <div style="position:absolute;top:-8px;right:-8px;pointer-events:none">
+          <svg width="260" height="190" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.22" style="transform:scaleX(-1)">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Chicken &amp; Meat Starters</span>
+        </div>
+      </div>
+
+      <!-- Starters — Chicken & Meat -->
+      <div class="panel-inner" style="padding-top:3.5rem;padding-bottom:3rem">
+
+        <span class="cat-label sr">Starters — Chicken &amp; Meat</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Shrimp Tempura <span class="chef-badge">Chef's Pick</span></div>
+          </div>
+          <div class="row-price">35</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Crispy Chicken <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(3 pcs)</span></div>
+          </div>
+          <div class="row-price">35</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Beef Cheese Balls <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">30</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Chicken Lollipops <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">30</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Teriyaki Chicken Wings <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(10 pcs)</span></div>
+          </div>
+          <div class="row-price">30</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Chilli Garlic Chicken Wings <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(10 pcs)</span></div>
+          </div>
+          <div class="row-price">30</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Chicken Cheese Balls <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">28</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Thai Chicken Satay</div></div>
+          <div class="row-price">28</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Olives Chicken Fingers <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">28</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Tandoori Chicken Wings <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(8 pcs)</span></div>
+          </div>
+          <div class="row-price">25</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Meat Samosa <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.45)">(5 pcs)</span></div>
+          </div>
+          <div class="row-price">18</div>
+        </div>
+      </div>
+
+      <!-- BAND — Platters -->
+      <div class="pizza-band" style="height:420px">
+        <img src="platter1.png" alt="Platters at Olives" style="object-position:center 50%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.72),rgba(13,17,7,0.35),rgba(13,17,7,0.72))"></div>
+        <div style="position:absolute;bottom:-8px;left:-8px;pointer-events:none">
+          <svg width="220" height="160" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.2">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Platters</span>
+        </div>
+      </div>
+
+      <!-- Platters -->
+      <div class="panel-inner" style="padding-top:3.5rem;padding-bottom:3rem">
+
+        <span class="cat-label sr">Platters</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Mixture of BBQ Grilled Platter <span class="chef-badge">Chef's Pick</span></div>
+            <div class="row-desc">Serves 1–2 pax</div>
+          </div>
+          <div class="row-price">100</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Triple Skewers Platter</div>
+            <div class="row-desc">Serves 2–3 pax</div>
+          </div>
+          <div class="row-price">100</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Whole Chicken Platter</div>
+            <div class="row-desc">Serves 2–3 pax</div>
+          </div>
+          <div class="row-price">95</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Chicken Wings Platter</div>
+            <div class="row-desc">Serves 2–3 pax</div>
+          </div>
+          <div class="row-price">90</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Meat Platter</div>
+            <div class="row-desc">Serves 1–2 pax</div>
+          </div>
+          <div class="row-price">60</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Wings Platter</div>
+            <div class="row-desc">Serves 1–2 pax</div>
+          </div>
+          <div class="row-price">55</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Vegetable Platter</div>
+            <div class="row-desc">Serves 1–2 pax</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+      </div>
+
+      <!-- BAND — Fish & Seafood -->
+      <div class="pizza-band" style="height:420px">
+        <img src="platter2.png" alt="Fish and seafood at Olives" style="object-position:center 45%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.72),rgba(13,17,7,0.35),rgba(13,17,7,0.72))"></div>
+        <div style="position:absolute;top:-8px;right:-8px;pointer-events:none">
+          <svg width="260" height="190" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.22" style="transform:scaleX(-1)">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Fish &amp; Seafood</span>
+        </div>
+      </div>
+
+      <!-- Fish & Seafood -->
+      <div class="panel-inner" style="padding-top:3.5rem;padding-bottom:3rem">
+
+        <span class="cat-label sr">Fish &amp; Seafood</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Grilled Salmon <span class="chef-badge">Chef's Pick</span></div>
+          </div>
+          <div class="row-price">75</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Grilled King Prawns</div></div>
+          <div class="row-price">70</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Whole Fried Tilapia</div></div>
+          <div class="row-price">50</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Garlic Prawns</div></div>
+          <div class="row-price">45</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Beer-Battered Fish and Chips</div></div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Grilled Tilapia</div></div>
+          <div class="row-price">37</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Fish Fillet</div></div>
+          <div class="row-price">37</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Chilli Garlic Fish</div></div>
+          <div class="row-price">32</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Fish Fingers</div></div>
+          <div class="row-price">37</div>
+        </div>
+      </div>
+
+      <!-- BAND — Burgers -->
+      <div class="pizza-band" style="height:420px">
+        <img src="burger.png" alt="Burgers at Olives" data-scale="0.8"
+             style="object-position:center 50%; width:125%; height:162.5%; top:-31.25%; left:-12.5%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.72),rgba(13,17,7,0.35),rgba(13,17,7,0.72))"></div>
+        <div style="position:absolute;bottom:-8px;left:-8px;pointer-events:none">
+          <svg width="220" height="160" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.2">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Burgers</span>
+        </div>
+      </div>
+
+      <!-- Burgers -->
+      <div class="panel-inner" style="padding-top:3.5rem">
+
+        <span class="cat-label sr">Burgers</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Bacon &amp; Cheese Burger</div></div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Pork Burger</div></div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">BBQ Chicken Burger</div></div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Classic Beef Burger</div></div>
+          <div class="row-price">38</div>
+        </div>
+
+        <div class="menu-note sr">All prices in thousands of UGX. Menu items subject to seasonal availability.</div>
+      </div>
+
+    </section>
+
+    <!-- ─── BREAKFAST ─── -->
+    <section class="menu-panel" id="tab-breakfast" role="tabpanel">
+      <div class="panel-inner">
+
+        <span class="cat-label sr">Breakfast</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Hashbrown <span style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:400;color:rgba(245,240,232,0.5)">(5 pcs)</span></div>
+            <div class="row-desc">Finely julienned potatoes, fried until golden brown</div>
+          </div>
+          <div class="row-price">20</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Chicken Omelette <span class="chef-badge">Chef's Pick</span></div>
+            <div class="row-desc">3 eggs, avocado, tomatoes, cheddar cheese, served with grilled chicken</div>
+          </div>
+          <div class="row-price">22</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Frank Wrap</div>
+            <div class="row-desc">Grilled chicken, scrambled eggs, avocado, tomatoes &amp; cheddar cheese wrapped in a homemade tortilla, served with home fries</div>
+          </div>
+          <div class="row-price">25</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Olives Breakfast</div>
+            <div class="row-desc">2 fried eggs, pair of beef sausages, bacon strips, home fries</div>
+          </div>
+          <div class="row-price">30</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Spanish Omelette</div>
+            <div class="row-desc">3–4 eggs, fresh green pepper, tomatoes &amp; onions, served with side salad</div>
+          </div>
+          <div class="row-price">22</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Smoked Pancakes <span class="chef-badge">Chef's Pick</span></div>
+            <div class="row-desc">Choice of ice cream, maple syrup, fresh fruit or chocolate sauce</div>
+          </div>
+          <div class="row-price">22</div>
+        </div>
+
+        <div class="menu-note sr">
+          All breakfast items are served with a glass of juice or a cup of black tea / coffee.<br>
+          Breakfast is available until 11:45 AM.
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PIZZA ─── -->
+    <section class="menu-panel" id="tab-pizza" role="tabpanel">
+
+      <!-- HERO BAND -->
+      <div class="pizza-band" style="height:520px">
+        <img src="veg.png" alt="Olives pizza" style="object-position:center 40%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.35),rgba(13,17,7,0.8))"></div>
+        <!-- Olive branch — top right -->
+        <div style="position:absolute;top:-8px;right:-8px;pointer-events:none">
+          <svg width="260" height="190" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.22" style="transform:scaleX(-1)">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2.5rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Stone oven baked · Kampala</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(42px,5vw,72px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.3rem;line-height:1">Pizza</h2>
+        </div>
+      </div>
+
+      <!-- VEGETARIAN -->
+      <div class="pizza-wide" style="padding:4rem 4rem 0">
+        <span class="cat-label sr">Vegetarian</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Margarita</div><div class="pizza-pl">L 33<span class="pizza-pm">M 28</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, fresh basil and mozzarella</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Paneer Tikka Pizza</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Paneer, onion, green pepper, fresh coriander & topped with garlic cream sauce</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Olives Special <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Spicy tomato sauce, sweet-corn, fresh basil, black olives, jalapeño peppers, onions, mozzarella</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Veg Tropical</div><div class="pizza-pl">L 33<span class="pizza-pm">M 28</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, onions, green pepper, pineapple</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Quattro Formaggi</div><div class="pizza-pl">L 32<span class="pizza-pm">M 28</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella cheese, parmesan cheese, gorgonzola cheese</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Vegetariana</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, onion & green pepper</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Tex Mex</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, jalapeño, feta cheese, sour cream, onions, avocado, coriander</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Cipollina</div><div class="pizza-pl">L 33<span class="pizza-pm">M 28</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, onions & mozzarella</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Roasted Peppers <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, roasted peppers, feta cheese, onions & sundried tomatoes</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Funghi</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, garlic & mushrooms</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Roma</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, red & yellow pepper</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Veg. Hot &amp; Spicy <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 30<span class="pizza-pm">M 25</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, green pepper, onions, green chillies, sweet corn</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERSTITIAL BAND 1 -->
+      <div class="pizza-band" style="height:420px;margin:3.5rem 0">
+        <img src="veg2.png" alt="Olives pizza" style="object-position:center 35%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.75),rgba(13,17,7,0.4),rgba(13,17,7,0.75))"></div>
+        <!-- Olive branch — bottom left -->
+        <div style="position:absolute;bottom:-8px;left:-8px;pointer-events:none">
+          <svg width="220" height="160" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.2">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Chicken &amp; Meat</span>
+        </div>
+      </div>
+
+      <!-- CHICKEN + MEAT & HAM + SEAFOOD -->
+      <div class="pizza-wide" style="padding:0 4rem">
+
+        <span class="cat-label sr">Chicken</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Chicken Tikka <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, onions, chicken tikka cubes, sweet corn, green pepper & mozzarella</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">BBQ Chicken Pizza <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, onion, green pepper, chicken, topped with BBQ sauce</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Pollo</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Mozzarella, onions, shredded chicken & green pepper</div>
+          </div>
+        </div>
+
+        <span class="cat-label sr" style="margin-top:3rem">Meat &amp; Ham</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Meat Feasta <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 45<span class="pizza-pm">&nbsp;</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, chicken, beef steak, minced meat, beef sausage</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">BBQ Steak Pizza</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">BBQ beef strips, onion, green pepper & topped with BBQ sauce</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Regina <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, cooked ham & mushrooms</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Tropicana</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, ham and pineapples</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Capriciosa <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 40<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, ham, minced meat</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Proscuitto Cotton</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, ham</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Calabrese</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Meat sausages, tomatoes, mozzarella cheese</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Pancetta <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, bacon & mozzarella</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Bacavo</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, bacon, feta cheese, garlic and avocado</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Carbonara <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Bacon, white sauce, mushrooms</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Diavola</div><div class="pizza-pl">L 40<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, salami, olives & hot chilli</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Salami (Hot / Plain)</div><div class="pizza-pl">L 40<span class="pizza-pm">M 35</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella & your choice of salami</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Calzone</div><div class="pizza-pl">L 40<span class="pizza-pm">M 35</span></div></div>
+            <div class="pizza-item-desc">Mozzarella & ham / salame</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Campione <span class="chef-badge">Chef's Pick</span></div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, onions, minced meat & mushrooms</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Quattro Stagioni</div><div class="pizza-pl">L 38<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, chicken, ham & egg</div>
+          </div>
+        </div>
+
+        <span class="cat-label sr" style="margin-top:3rem">Seafood</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Pescatora</div><div class="pizza-pl">L 40<span class="pizza-pm">M 32</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, onions & tuna fish</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Frutti di Mare</div><div class="pizza-pl">L 42<span class="pizza-pm">M 35</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, sauce, mozzarella & fresh prawns, parsley</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- INTERSTITIAL BAND 2 -->
+      <div class="pizza-band" style="height:420px;margin:3.5rem 0">
+        <img src="veg.png" alt="Olives pizza" style="object-position:center 60%">
+        <div class="pizza-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.7),rgba(13,17,7,0.35),rgba(13,17,7,0.7))"></div>
+        <!-- Olive branch — top right -->
+        <div style="position:absolute;top:-8px;right:-8px;pointer-events:none">
+          <svg width="220" height="160" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" opacity="0.2" style="transform:scaleX(-1)">
+            <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+            <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+            <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+            <ellipse cx="138" cy="103" rx="18" ry="7" transform="rotate(25 138 103)" fill="#6B7C3E"/>
+            <circle cx="40" cy="18" r="6" fill="#2A3318"/>
+            <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            <circle cx="110" cy="72" r="5" fill="#2A3318"/>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.6)">Specials &amp; Desserts</span>
+        </div>
+      </div>
+
+      <!-- SPECIALS + MEGA + DESSERTS + EXTRAS -->
+      <div class="pizza-wide" style="padding:0 4rem 8rem">
+
+        <span class="cat-label sr">Specials</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Roasted Garlic &amp; Spinach</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, fresh spinach and roasted garlic</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Boscailo</div><div class="pizza-pl">L 35<span class="pizza-pm">M 30</span></div></div>
+            <div class="pizza-item-desc">Tomatoes, mozzarella, mushrooms, slices of beef sausages</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Meat Lovers</div><div class="pizza-pl">L 40<span class="pizza-pm">M 35</span></div></div>
+            <div class="pizza-item-desc">Savory pepperoni, smoky bacon, seasoned sausage, tender beef and juicy ham</div>
+          </div>
+        </div>
+
+        <!-- MEGA PIZZA — featured card -->
+        <div class="sr" style="margin-top:2rem;padding:2rem 2.5rem;background:rgba(107,124,62,0.09);border:1px solid rgba(107,124,62,0.28);position:relative;overflow:hidden">
+          <div style="position:absolute;right:-8px;top:-8px;pointer-events:none;opacity:0.18">
+            <svg width="130" height="100" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+              <path d="M10 5 C 50 25, 110 55, 190 140" stroke="#8BA059" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <ellipse cx="30" cy="22" rx="20" ry="8" transform="rotate(40 30 22)" fill="#6B7C3E"/>
+              <ellipse cx="65" cy="48" rx="20" ry="8" transform="rotate(35 65 48)" fill="#6B7C3E"/>
+              <ellipse cx="100" cy="75" rx="20" ry="8" transform="rotate(30 100 75)" fill="#6B7C3E"/>
+              <circle cx="40" cy="18" r="7" fill="#2A3318"/>
+              <circle cx="75" cy="45" r="6" fill="#2A3318"/>
+            </svg>
+          </div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap">
+            <div>
+              <div style="font-size:0.53rem;letter-spacing:0.32em;text-transform:uppercase;color:#C4A35A;margin-bottom:0.5rem">Signature · Large Only</div>
+              <div style="font-family:'Cormorant Garant',serif;font-size:1.65rem;font-weight:500;color:#F5F0E8;letter-spacing:-0.01em">Olives Mega Pizza</div>
+              <div style="font-size:0.77rem;color:rgba(245,240,232,0.4);line-height:1.75;margin-top:0.5rem;max-width:500px">Go big or go home. Pepperoni, sausage, smoky bacon, juicy beef, fresh veggies, and a blend of melted mozzarella and cheddar cheeses.</div>
+            </div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:400;color:#C4A35A;flex-shrink:0;letter-spacing:-0.02em;padding-top:0.25rem">100</div>
+          </div>
+        </div>
+
+        <span class="cat-label sr" style="margin-top:3.5rem">Dessert Pizzas</span>
+        <div class="cat-rule"></div>
+        <div class="pizza-2col">
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Nutella Pizza</div><div class="pizza-pl">25<span class="pizza-pm">&nbsp;</span></div></div>
+            <div class="pizza-item-desc">With banana toppings</div>
+          </div>
+          <div class="pizza-item sr">
+            <div class="pizza-item-top"><div class="pizza-item-name">Chocolate Lover's Pizza</div><div class="pizza-pl">30<span class="pizza-pm">&nbsp;</span></div></div>
+            <div class="pizza-item-desc">Rich chocolate sauce, indulgent toppings</div>
+          </div>
+        </div>
+
+        <span class="cat-label sr" style="margin-top:3.5rem">Extra Toppings</span>
+        <div class="cat-rule"></div>
+        <div class="sr" style="margin-top:0.25rem">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:0">
+            <div style="font-size:0.79rem;color:rgba(245,240,232,0.5);padding:0.65rem 1rem 0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055)">Rocket, jalapeño peppers, mushrooms, sweetcorn, onions, olives</div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:0.88rem;color:#C4A35A;padding:0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055);white-space:nowrap;text-align:right">UGX 2,000</div>
+            <div style="font-size:0.79rem;color:rgba(245,240,232,0.5);padding:0.65rem 1rem 0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055)">Chicken, minced meat, bacon, cooked ham, salami, artichokes, anchovies, sundried tomatoes</div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:0.88rem;color:#C4A35A;padding:0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055);white-space:nowrap;text-align:right">UGX 5,000</div>
+            <div style="font-size:0.79rem;color:rgba(245,240,232,0.5);padding:0.65rem 1rem 0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055)">Parma ham or gorgonzola</div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:0.88rem;color:#C4A35A;padding:0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055);white-space:nowrap;text-align:right">UGX 8,000</div>
+            <div style="font-size:0.79rem;color:rgba(245,240,232,0.5);padding:0.65rem 1rem 0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055)">Extra cheese or feta</div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:0.88rem;color:#C4A35A;padding:0.65rem 0;border-bottom:1px solid rgba(245,240,232,0.055);white-space:nowrap;text-align:right">UGX 5,000</div>
+            <div style="font-size:0.79rem;color:rgba(245,240,232,0.5);padding:0.65rem 1rem 0.65rem 0">Gluten free crust</div>
+            <div style="font-family:'Cormorant Garant',serif;font-size:0.88rem;color:#C4A35A;padding:0.65rem 0;white-space:nowrap;text-align:right">UGX 8,000</div>
+          </div>
+          <div class="menu-note" style="margin-top:1.5rem">Pizza prices in thousands UGX (e.g. 33 = 33,000 UGX) · M = medium · L = large</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── DRINKS ─── -->
+    <section class="menu-panel" id="tab-drinks" role="tabpanel">
+
+      <!-- HERO BAND — Signature Cocktails -->
+      <div class="drink-band" style="height:320px">
+        <img src="pink_panther.png" alt="Signature Cocktails" style="object-position:center 45%">
+        <div class="drink-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.25),rgba(13,17,7,0.85))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Crafted by our Mixologist</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(36px,4.5vw,60px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.25rem;line-height:1">Signature Cocktails</h2>
+        </div>
+      </div>
+
+      <!-- Signature Cocktails -->
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+        <figure class="drink-portrait-float sr">
+          <img src="double_michalada.png" alt="Double Michalada">
+          <figcaption>Double Michalada</figcaption>
+        </figure>
+        <span class="cat-label sr">Signature Cocktails</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Baby Guiness</div>
+            <div class="row-desc">A Blended Coffee &amp; Whiskey holding Guiness bottle Upside Down</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">No Idea</div>
+            <div class="row-desc">A Sweet Whisky Peach Flavoured &amp; Orange drink</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Mad Over You</div>
+            <div class="row-desc">Affection of Vodka infused with Strawberries &amp; Malibu</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Single Michalada</div>
+            <div class="row-desc">Jamican Flavoured Leaves blended with Gin, to give a greenish Look of Heineken into the Glass holding Upside Down Single Bottle</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Masturbation</div>
+            <div class="row-desc">A modified long island recipe with a complement of Jagermeister and Red Bull to give you a long night stand</div>
+          </div>
+          <div class="row-price">45</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Pink Panther <span style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;color:rgba(245,240,232,0.45)">with Cider</span></div>
+            <div class="row-desc">Strawberry Blend in goblet Glass with a Cider Upside Down</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Long Island Wuu Wii <span style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;color:rgba(196,163,90,0.7);text-transform:uppercase;letter-spacing:0.08em">Strong</span></div>
+            <div class="row-desc">Speacial Cocktail with More Alcoholic(Strong) with Short a Side</div>
+          </div>
+          <div class="row-price">45</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Falling Snow</div>
+            <div class="row-desc">Bluberry Blend infused with Gunrano Bottle in a twisted way</div>
+          </div>
+          <div class="row-price">45</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Pink Panther <span style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;color:rgba(245,240,232,0.45)">with Savanna</span></div>
+            <div class="row-desc">Strawberry Blend in goblet Glass with a Savanna Upside Down</div>
+          </div>
+          <div class="row-price">50</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Double Michalada</div>
+            <div class="row-desc">Jamican Flavoured Leaves blended with Gin, to give a greenish Look of Heineken into the Glass holding Upside Down Two Bottles</div>
+          </div>
+          <div class="row-price">50</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Fruits of the Forest <span class="chef-badge">House Favourite</span></div>
+            <div class="row-desc">Take A Upgraded Pina Colada in Pineapple Shell with Added Flavours, Cashew Nuts, Ice Cream, Bailey's with a Piece of Cake</div>
+          </div>
+          <div class="row-price">50</div>
+        </div>
+
+        <div style="clear:both"></div>
+        <span class="cat-label sr" style="margin-top:2rem">Creamy / Non Citric Cocktails</span>
+        <div class="cat-rule"></div>
+        <div style="display:flex;gap:2rem;align-items:flex-start">
+          <div style="flex:1">
+            <div class="menu-row sr">
+              <div class="row-body"><div class="row-name">Wakanda Forever</div></div>
+              <div class="row-price">40</div>
+            </div>
+            <div class="menu-row sr">
+              <div class="row-body"><div class="row-name">Mudslide</div></div>
+              <div class="row-price">40</div>
+            </div>
+          </div>
+          <figure class="sr" style="flex-shrink:0;width:170px;margin:0">
+            <img src="wakanda_forever.png" alt="Wakanda Forever" style="width:100%;height:220px;object-fit:cover;object-position:center 45%;display:block;filter:saturate(0.88) brightness(0.78)">
+            <figcaption style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(196,163,90,0.6);text-align:center;padding:0.4rem 0 0">Wakanda Forever</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Strong + Frozen — image-header 2-col -->
+      <div class="panel-inner" style="padding-top:2.5rem;padding-bottom:2rem">
+        <div class="drinks-2col">
+          <div>
+            <figure class="drink-img-col-photo sr">
+              <img src="leg_less.png" alt="Leg Less" style="object-position:center 45%">
+              <figcaption>Strong Cocktails</figcaption>
+            </figure>
+            <span class="cat-label sr">Strong Cocktails</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Leg Less</div></div><div class="row-price">50</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pull of Your Pants</div></div><div class="row-price">50</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pure Heaven</div></div><div class="row-price">50</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Witch Crafts</div></div><div class="row-price">50</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Aunt Roberta</div></div><div class="row-price">55</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Into the Blankets</div></div><div class="row-price">55</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Slap the Ghost</div></div><div class="row-price">55</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Fuck the Witch</div></div><div class="row-price">55</div></div>
+          </div>
+          <div>
+            <figure class="drink-img-col-photo sr">
+              <img src="faling_snow.png" alt="Falling Snow" style="object-position:center 38%">
+              <figcaption>Frozen Cocktails</figcaption>
+            </figure>
+            <span class="cat-label sr">Frozen Cocktails</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr">
+              <div><div class="compact-name">Green Envy</div><div class="compact-sub">Sweetest Envy</div></div>
+              <div class="row-price">45</div>
+            </div>
+            <div class="compact-row sr">
+              <div><div class="compact-name">White Horse</div><div class="compact-sub">Caramel</div></div>
+              <div class="row-price">45</div>
+            </div>
+            <div class="compact-row sr">
+              <div><div class="compact-name">Falling Snow</div><div class="compact-sub">Rose</div></div>
+              <div class="row-price">45</div>
+            </div>
+            <div class="compact-row sr"><div><div class="compact-name">Strawberry Daiquiri</div></div><div class="row-price">45</div></div>
+            <div class="menu-note sr" style="margin-top:1.75rem;font-size:0.72rem">For More Information about Strong Cocktails, Mixologist is always available to Guide &amp; Suggest</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mocktails + Pitchers — image-header 2-col -->
+      <div class="panel-inner" style="padding-top:2.5rem;padding-bottom:2rem">
+        <div class="drinks-2col">
+          <div>
+            <figure class="drink-img-col-photo sr">
+              <img src="pregnant_vitamin_c.png" alt="Pregnant Vitamin C" style="object-position:center 50%">
+              <figcaption>Mocktails</figcaption>
+            </figure>
+            <span class="cat-label sr">Mocktails</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Life Saver</div></div><div class="row-price">30</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Driver's License</div></div><div class="row-price">30</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Instant Happiness</div></div><div class="row-price">30</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pregnant Vitamin C</div></div><div class="row-price">30</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pure Heaven</div></div><div class="row-price">30</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Don't Give Up</div></div><div class="row-price">30</div></div>
+          </div>
+          <div>
+            <figure class="drink-img-col-photo sr">
+              <img src="mabira_forest.png" alt="Mabira Forest" style="object-position:center 48%">
+              <figcaption>Pitchers</figcaption>
+            </figure>
+            <span class="cat-label sr">Pitchers</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Strawberry Mimosa</div></div><div class="row-price">120</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Orange Mimosa</div></div><div class="row-price">120</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pineapple Mimosa</div></div><div class="row-price">120</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Fly Wings</div></div><div class="row-price">140</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Mabira Forest</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Gin Fizz</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Long Island Pitcher</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Bourbon Bee String</div></div><div class="row-price">150</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BAND — Classic Cocktails -->
+      <div class="drink-band" style="height:320px">
+        <img src="margarita.png" alt="Classic Cocktails" style="object-position:center 42%">
+        <div class="drink-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.2),rgba(13,17,7,0.88))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Timeless &amp; Beloved</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(34px,4vw,56px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.25rem;line-height:1">Classic Cocktails</h2>
+        </div>
+      </div>
+
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+        <figure class="drink-portrait-float sr">
+          <img src="long_island_iced_tea.png" alt="Long Island Iced Tea">
+          <figcaption>Long Island Iced Tea</figcaption>
+        </figure>
+        <span class="cat-label sr">Classic Cocktails</span>
+        <div class="cat-rule"></div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Classic Mojito</div>
+          </div>
+          <div class="row-price">35</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Long Island Iced</div>
+            <div class="row-desc">Known for its high concentration of alcohol — Vodka, Tequila, Gin, Rum, Triple Sec &amp; Splash of Cola</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Martini</div>
+            <div class="row-desc">A cocktail made with gin and vermouth, garnished with an olive, a lemon twist, or both.</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Pink Lady</div>
+            <div class="row-desc">The perfect blend of cranberry juice, lavender and apple for a fruity finish.</div>
+          </div>
+          <div class="row-price">38</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Sex on the Beach</div>
+            <div class="row-desc">A long fruity mixture of vodka, peach, schnapps, orange and cranberry juice</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Passion Mojito</div>
+            <div class="row-desc">A Tropical Cocktail that Combines Rum, Passion Fruit Juice, Mint Leaves &amp; Lime Juice. Garnish with a Sprig of Mint &amp; An Orange Peel</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Black Russian</div>
+            <div class="row-desc">A simple, two-ingredient cocktail that consists of vodka and coffee liqueur.</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">White Russian</div>
+            <div class="row-desc">A classic three-ingredient cocktail that combines vodka, Kahlua and cream.</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Screw Driver</div>
+            <div class="row-desc">A cocktail made with vodka and orange juice.</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Cosmopolitan</div>
+            <div class="row-desc">Famously known as the "Cosmo" — a blend of vodka, cranberry juice, Cointreau, and lime juice</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Tequila Sunrise</div>
+            <div class="row-desc">A vibrant cocktail made with Tequila, Orange Juice, Grenadine. Garnish with orange Slice</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body"><div class="row-name">Margarita</div></div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Old Fashion</div>
+            <div class="row-desc">A Cocktail made by mudding sugar with bitters and water, adding Bourbon Whiskey. Garnish with an Orange Slice</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Whiskey Sour</div>
+            <div class="row-desc">A Classic Mixed Drink with Lemon juice, Sugar, Whiskey</div>
+          </div>
+          <div class="row-price">40</div>
+        </div>
+        <div class="menu-row sr">
+          <div class="row-body">
+            <div class="row-name">Pina Colada</div>
+            <div class="row-desc">A harmonious blend of creamy coconut cream, sweet pineapple juice, and the smooth embrace of white rum</div>
+          </div>
+          <div class="row-price">45</div>
+        </div>
+        <div class="menu-note sr">No alcohol will be served to persons below 18 yrs</div>
+      </div>
+
+      <!-- BAND — Towers & Shooters -->
+      <div class="drink-band" style="height:280px">
+        <img src="tower.png" alt="Towers and Shooters" style="object-position:center 30%">
+        <div class="drink-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.75),rgba(13,17,7,0.4),rgba(13,17,7,0.75))"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.65)">Towers &amp; Shooters</span>
+        </div>
+      </div>
+
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+        <div class="drinks-2col">
+          <div>
+            <span class="cat-label sr">Towers</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Red Sea</div><div class="compact-sub">3.5 Liters</div></div><div class="row-price">230</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Blue Ocean</div><div class="compact-sub">4 Liters</div></div><div class="row-price">260</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">The Giant</div><div class="compact-sub">5 Liters</div></div><div class="row-price">300</div></div>
+            <div class="menu-note sr" style="margin-top:1.5rem;font-size:0.72rem">For More Information about Towers, Mixologist is always available to Guide &amp; Suggest</div>
+          </div>
+          <div>
+            <span class="cat-label sr">Shooters</span>
+            <div class="cat-rule"></div>
+            <figure class="drink-img-col-photo sr">
+              <img src="dick_shots.png" alt="Shooters" style="object-position:center 50%">
+              <figcaption>Shooters</figcaption>
+            </figure>
+            <div class="compact-row sr"><div><div class="compact-name">Wuu Wii</div></div><div class="row-price">10</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Tears of a Tiger</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Brain Damage</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">B5S / B52</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Jager Bomb</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Adios Motherfucker</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Anaconda</div></div><div class="row-price">18</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Blow Job</div></div><div class="row-price">18</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Dick Shots</div></div><div class="row-price">20</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BAND — Wines -->
+      <div class="drink-band" style="height:280px">
+        <img src="four_cousin_naturally_sweet.png" alt="Wines" style="object-position:center 35%">
+        <div class="drink-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.3),rgba(13,17,7,0.88))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Bottle &amp; Glass</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(34px,4vw,56px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.25rem;line-height:1">Wines List</h2>
+        </div>
+      </div>
+
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+
+        <!-- Wine bottle gallery -->
+        <div class="bottle-gallery sr">
+          <div class="bottle-gallery-item">
+            <img src="four_cousin_naturally_sweet.png" alt="Four Cousins">
+            <div class="bottle-name">Four Cousins</div>
+          </div>
+          <div class="bottle-gallery-item">
+            <img src="baron_darignac.png" alt="Baron D'Arignac">
+            <div class="bottle-name">Baron D'Arignac</div>
+          </div>
+          <div class="bottle-gallery-item">
+            <img src="kwv_chardonnay.png" alt="KWV">
+            <div class="bottle-name">KWV</div>
+          </div>
+          <div class="bottle-gallery-item">
+            <img src="brute_and_lux.png" alt="Belaire Brut &amp; Luxe">
+            <div class="bottle-name">Belaire Brut &amp; Luxe</div>
+          </div>
+        </div>
+
+        <div class="wine-2col">
+          <!-- Left: Red + Rose + Sparkling -->
+          <div>
+            <span class="cat-label sr">Red Wine (Bottle)</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">VL Merlot</div></div><div class="row-price">105</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">VL Cabernet Sauvignon</div></div><div class="row-price">105</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Baron D'Arignac Dry Red</div></div><div class="row-price">105</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Baron D'Arignac Sweet Red</div></div><div class="row-price">105</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Vinecrafter Merlot</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Cabernet Sauvignon</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Merlot</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Pinotage</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Shiraz</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Purebred Shiraz</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Rooiberg Pinotage</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Rooiberg Sweet Red</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Nederberg Cabernet Sauvignon</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Nederburg Merlot</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Nederburg Shiraz</div></div><div class="row-price">150</div></div>
+
+            <span class="cat-label sr" style="margin-top:2.5rem">Rose Wine (Bottle)</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pearlybay Sweet Rose</div></div><div class="row-price">120</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Baron D'Arignac Rose</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Rose</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Rooiberg Sweet Rose</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Nederburg Rose</div></div><div class="row-price">150</div></div>
+
+            <span class="cat-label sr" style="margin-top:2.5rem">Sparkling Wine</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">KWV Cuvee Brut</div></div><div class="row-price">150</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Zonin Moscato</div></div><div class="row-price">210</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Zonin Prosecco</div></div><div class="row-price">210</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Belaire (Rose)</div></div><div class="row-price">450</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Belaire (Luxe)</div></div><div class="row-price">450</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Belaire (Bleu)</div></div><div class="row-price">550</div></div>
+          </div>
+
+          <!-- Right: Champagne -->
+          <div>
+            <span class="cat-label sr">Champagne</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Madusa Gold</div></div><div class="row-price">450</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Madusa Red</div></div><div class="row-price">500</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Moet Brut</div></div><div class="row-price">650</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">GH Mumm</div></div><div class="row-price">650</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Veuve Clicquot</div></div><div class="row-price">700</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Moet Nectar</div></div><div class="row-price">700</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Veuve Rose</div></div><div class="row-price">750</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Veuve Rich</div></div><div class="row-price">950</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Ace of Spades Brut / Rose</div></div><div class="row-price">2.5M</div></div>
+          </div>
+        </div>
+        <div class="menu-note sr">No alcohol will be served to persons below 18 yrs</div>
+      </div>
+
+      <!-- BAND — Spirits (dark) -->
+      <div style="background:#0A0D06;padding:2rem 4rem 0">
+        <div style="max-width:820px;margin:0 auto;display:flex;align-items:flex-end;gap:2rem">
+          <div style="flex:1">
+            <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A;display:block;margin-bottom:0.4rem">Bottle &amp; Tot Prices</span>
+            <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(34px,4vw,54px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;line-height:1">Alcoholic Beverages</h2>
+          </div>
+          <figure style="flex-shrink:0;width:160px;margin:0">
+            <img src="alcoholic_beverages.png" alt="Alcoholic Beverages" style="width:100%;height:160px;object-fit:contain;object-position:center bottom;filter:brightness(0.78) saturate(0.85);display:block">
+          </figure>
+        </div>
+      </div>
+
+      <!-- Whiskey section (dark bg) -->
+      <div style="background:#0A0D06;padding:2.5rem 4rem 3rem">
+        <div style="max-width:820px;margin:0 auto">
+          <div class="drinks-2col">
+            <!-- Whiskey left col -->
+            <div>
+              <span class="cat-label sr" style="margin-top:0">Whiskey</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Black &amp; White</div><div class="spirits-price">120</div><div class="spirits-price">6</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Ballantine</div><div class="spirits-price">200</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">JW Red Label</div><div class="spirits-price">178</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">JW Black Label</div><div class="spirits-price">375</div><div class="spirits-price">13</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">JW Double Black</div><div class="spirits-price">425</div><div class="spirits-price">15</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Chivas Regal 12Yrs</div><div class="spirits-price">400</div><div class="spirits-price">15</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">JW Gold Label Reserve</div><div class="spirits-price">415</div><div class="spirits-price">20</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">JW Green Label</div><div class="spirits-price">460</div><div class="spirits-price">25</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Chivas Regal 18Yrs</div><div class="spirits-price">925</div><div class="spirits-price">30</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Blue Label</div><div class="spirits-price">1.3M</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Chivas Regal 25Yrs (Bottle)</div><div class="spirits-price">2M</div><div class="spirits-price dim">—</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Irish Whisky</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jameson Irish</div><div class="spirits-price">315</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jameson Black Barrel</div><div class="spirits-price">342</div><div class="spirits-price">12</div></div>
+            </div>
+
+            <!-- Bourbon + Single Malt right col -->
+            <div>
+              <span class="cat-label sr" style="margin-top:0">Bourbon Whisky</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jim Beam</div><div class="spirits-price">255</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jack Daniel No 7</div><div class="spirits-price">310</div><div class="spirits-price">12</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jack Daniel Honey</div><div class="spirits-price">310</div><div class="spirits-price">14</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jack Daniel Fire</div><div class="spirits-price">310</div><div class="spirits-price">14</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Single Malt Whiskey</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Singleton 12Yrs</div><div class="spirits-price">350</div><div class="spirits-price">16</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Glenlivet Founder's Reserve</div><div class="spirits-price">450</div><div class="spirits-price">18</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Glenfiddich 12Yrs</div><div class="spirits-price">450</div><div class="spirits-price">18</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Talisker</div><div class="spirits-price">450</div><div class="spirits-price">18</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Aberlour 12yrs</div><div class="spirits-price">430</div><div class="spirits-price">20</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Aberlour 16Yrs</div><div class="spirits-price">700</div><div class="spirits-price">24</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Glenlivet 12yrs</div><div class="spirits-price">620</div><div class="spirits-price">24</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Glenfiddich 15yrs</div><div class="spirits-price">650</div><div class="spirits-price">26</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Singleton 18Yrs</div><div class="spirits-price">595</div><div class="spirits-price">28</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gin + Cognac + Brandy (dark bg) -->
+      <div style="background:#0A0D06;padding:0 4rem 3rem;border-top:1px solid rgba(107,124,62,0.1)">
+        <div style="max-width:820px;margin:0 auto">
+          <div class="drinks-2col">
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Gin</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Hendricks</div><div class="spirits-price">450</div><div class="spirits-price">15</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Tanqueray London</div><div class="spirits-price">240</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Tanqueray 10</div><div class="spirits-price">420</div><div class="spirits-price">13</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Bombay Sapphire</div><div class="spirits-price">275</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Beefeater</div><div class="spirits-price">200</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Beefeater Pink</div><div class="spirits-price">175</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Gordon's</div><div class="spirits-price">150</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Gordon's Pink</div><div class="spirits-price">140</div><div class="spirits-price">7</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Gilbey's</div><div class="spirits-price">95</div><div class="spirits-price">5</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">UG Waragi Premium</div><div class="spirits-price">95</div><div class="spirits-price">5</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">UG Waragi Coconut</div><div class="spirits-price">95</div><div class="spirits-price">5</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">UG Waragi Lemon &amp; Ginger</div><div class="spirits-price">110</div><div class="spirits-price">5</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Brandy</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">KWV Brandy 10 Yrs</div><div class="spirits-price">250</div><div class="spirits-price">9</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">KWV Brandy 5 Yrs</div><div class="spirits-price">155</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">KWV Brandy 3 Yrs</div><div class="spirits-price">145</div><div class="spirits-price">12</div></div>
+            </div>
+
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Cognac</span>
+              <div class="cat-rule"></div>
+              <figure class="spirit-accent sr"><img src="hennessy.png" alt="Hennessy"></figure>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Courvoisier Vs</div><div class="spirits-price">400</div><div class="spirits-price">20</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Courvoisier Vsop</div><div class="spirits-price">600</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Hennessy Vs</div><div class="spirits-price">600</div><div class="spirits-price">18</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Hennessy Vsop</div><div class="spirits-price">800</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Davidoff Vs</div><div class="spirits-price">380</div><div class="spirits-price">15</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Martell Vs</div><div class="spirits-price">550</div><div class="spirits-price">20</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Martell Vsop</div><div class="spirits-price">675</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Remy Martin Vsop</div><div class="spirits-price">655</div><div class="spirits-price dim">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rum + Vodka + Tequila (dark bg) -->
+      <div style="background:#0A0D06;padding:0 4rem 3rem;border-top:1px solid rgba(107,124,62,0.1)">
+        <div style="max-width:820px;margin:0 auto">
+          <div class="drinks-2col">
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Rum</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Captain Morgan Gold</div><div class="spirits-price">100</div><div class="spirits-price">5</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Bacardi</div><div class="spirits-price">180</div><div class="spirits-price">8</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Malibu</div><div class="spirits-price">320</div><div class="spirits-price">9</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Havana Club Gold / Silver</div><div class="spirits-price">320</div><div class="spirits-price">12</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Vodka</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Smirnoff Red</div><div class="spirits-price">100</div><div class="spirits-price">5</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Absolut</div><div class="spirits-price">215</div><div class="spirits-price">9</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Absolut Vanilla</div><div class="spirits-price">230</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Absolut Mango</div><div class="spirits-price">230</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Stolichnaya</div><div class="spirits-price">175</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Ciroc</div><div class="spirits-price">365</div><div class="spirits-price">14</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Grey Goose</div><div class="spirits-price">385</div><div class="spirits-price">14</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Ciroc Flavor</div><div class="spirits-price">400</div><div class="spirits-price">16</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Belvedere</div><div class="spirits-price">415</div><div class="spirits-price">16</div></div>
+            </div>
+
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Tequila</span>
+              <div class="cat-rule"></div>
+              <figure class="spirit-accent sr"><img src="azul_gold.png" alt="Azul Gold Tequila"></figure>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Olmeca Silver</div><div class="spirits-price">250</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Olmeca Chocolate</div><div class="spirits-price">250</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Olmeca Gold</div><div class="spirits-price">280</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jose Cuervo Gold</div><div class="spirits-price">300</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jose Cuervo Silver</div><div class="spirits-price">300</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Don Julio Reposado</div><div class="spirits-price">550</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Don Julio Bianco</div><div class="spirits-price">550</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Don Julio 1942</div><div class="spirits-price">1.3M</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Azul Reposado</div><div class="spirits-price">2.5M</div><div class="spirits-price dim">—</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Azul Gold</div><div class="spirits-price">3M</div><div class="spirits-price dim">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liqueur + Vermouth + Beers + Soda (dark bg) -->
+      <div style="background:#0A0D06;padding:0 4rem 3rem;border-top:1px solid rgba(107,124,62,0.1)">
+        <div style="max-width:820px;margin:0 auto">
+          <div class="drinks-2col">
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Liqueur</span>
+              <div class="cat-rule"></div>
+              <figure class="spirit-accent sr"><img src="baileys.png" alt="Baileys"></figure>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Tia Maria</div><div class="spirits-price dim">—</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Campari</div><div class="spirits-price dim">—</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Triple Sec</div><div class="spirits-price dim">—</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Southern Comfort</div><div class="spirits-price dim">—</div><div class="spirits-price">12</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Bailey's 750 ML</div><div class="spirits-price">150</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Kahlua</div><div class="spirits-price">150</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Amarula</div><div class="spirits-price">200</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Jagermeister</div><div class="spirits-price">220</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Bailey's 1 Ltr</div><div class="spirits-price">250</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Cointreau</div><div class="spirits-price">250</div><div class="spirits-price">12</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Vermouth</span>
+              <div class="cat-rule"></div>
+              <div class="spirits-head sr"><span>Name</span><span>Bottle</span><span>Tot</span></div>
+              <div class="spirits-row sr"><div class="spirits-name">Martini Bianco</div><div class="spirits-price">150</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Martini Rosso</div><div class="spirits-price">150</div><div class="spirits-price">10</div></div>
+              <div class="spirits-row sr"><div class="spirits-name">Extra Dry Martini</div><div class="spirits-price">150</div><div class="spirits-price">10</div></div>
+            </div>
+
+            <div>
+              <span class="cat-label sr" style="margin-top:2.5rem">Beers</span>
+              <div class="cat-rule"></div>
+              <div class="compact-row sr"><div><div class="compact-name">Local Beers</div></div><div class="row-price">10</div></div>
+              <div class="compact-row sr"><div><div class="compact-name">Heineken</div></div><div class="row-price">15</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Alcopop</span>
+              <div class="cat-rule"></div>
+              <div class="compact-row sr"><div><div class="compact-name">Smirnoff Black Ice</div></div><div class="row-price">10</div></div>
+
+              <span class="cat-label sr" style="margin-top:2.5rem">Soda &amp; Water</span>
+              <div class="cat-rule"></div>
+              <div class="compact-row sr"><div><div class="compact-name">Water</div></div><div class="row-price">4</div></div>
+              <div class="compact-row sr"><div><div class="compact-name">Soda 300ml</div></div><div class="row-price">5</div></div>
+              <div class="compact-row sr"><div><div class="compact-name">Coke Zero</div></div><div class="row-price">6</div></div>
+              <div class="compact-row sr"><div><div class="compact-name">Sparkling Water</div></div><div class="row-price">6</div></div>
+              <div class="compact-row sr"><div><div class="compact-name">Red Bull</div></div><div class="row-price">14</div></div>
+
+              <div class="menu-note sr" style="margin-top:2rem;font-size:0.72rem">Standard serving tot is 25ml · No alcohol will be served to persons below 18 yrs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── DESSERTS ─── -->
+    <section class="menu-panel" id="tab-desserts" role="tabpanel">
+
+      <!-- HERO BAND -->
+      <div class="drink-band" style="height:320px">
+        <img src="coffee.png" alt="Coffee and Desserts" style="object-position:center 30%">
+        <div class="drink-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.2),rgba(13,17,7,0.88))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Sweet Endings</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(36px,4.5vw,60px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.25rem;line-height:1">Desserts &amp; Coffee</h2>
+        </div>
+      </div>
+
+      <!-- Coffee -->
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+        <span class="cat-label sr">Coffee</span>
+        <div class="cat-rule"></div>
+        <div class="coffee-head sr"><span>Name</span><span>Single</span><span>Double</span></div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Espresso</div>
+          <div class="spirits-price">8</div><div class="spirits-price">10</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Macchiato</div>
+          <div class="spirits-price">8</div><div class="spirits-price">10</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Americano</div>
+          <div class="spirits-price">10</div><div class="spirits-price">12</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Cappucino</div>
+          <div class="spirits-price">11</div><div class="spirits-price">12</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Cafe Latte</div>
+          <div class="spirits-price">11</div><div class="spirits-price">14</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">African Coffee</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">12</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Hot Chocolate</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">13</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Mocha</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">12</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Frappuccino</div>
+          <div class="spirits-price">12</div><div class="spirits-price">14</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Bailey's Cappucino</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">25</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Irish Coffee</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">25</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Glass of Milk</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">10</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:#F5F0E8">Affogato de Espresso</div>
+          <div class="spirits-price dim">—</div><div class="spirits-price">15</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:rgba(245,240,232,0.5);font-size:0.82rem">Add Flavors <span style="font-family:'DM Sans',sans-serif;font-size:0.72rem">(Caramel, Hazelnut, Vanilla)</span></div>
+          <div class="spirits-price">+3</div><div class="spirits-price dim">—</div>
+        </div>
+        <div class="coffee-row sr">
+          <div style="font-family:'Cormorant Garant',serif;font-size:1.08rem;font-weight:500;color:rgba(245,240,232,0.5);font-size:0.82rem">Top it up with Whipped Cream</div>
+          <div class="spirits-price">+3</div><div class="spirits-price dim">—</div>
+        </div>
+      </div>
+
+      <!-- BAND — Teas + Juices -->
+      <div class="drink-band" style="height:280px">
+        <img src="tea.png" alt="Teas" style="object-position:center 40%">
+        <div class="drink-band-overlay" style="background:linear-gradient(135deg,rgba(13,17,7,0.75),rgba(13,17,7,0.4),rgba(13,17,7,0.75))"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(196,163,90,0.65)">Teas &amp; Infusions</span>
+        </div>
+      </div>
+
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:2rem">
+        <div class="drinks-2col">
+          <div>
+            <span class="cat-label sr">Teas</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr"><div><div class="compact-name">Black Tea</div></div><div class="row-price">10</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">English Tea</div></div><div class="row-price">10</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Lemon Tea</div></div><div class="row-price">10</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Dawa Tea</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Matcha Tea</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">African Tea</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">African Tea Spiced</div></div><div class="row-price">14</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Indian Tea Spiced</div></div><div class="row-price">14</div></div>
+          </div>
+          <div>
+            <span class="cat-label sr">Herbal Teas</span>
+            <div class="cat-rule"></div>
+            <div class="compact-row sr">
+              <div>
+                <div class="compact-name">Tea</div>
+                <div class="compact-sub">Chamomile · Peppermint · Earl Grey · Green Tea · English Breakfast</div>
+              </div>
+              <div class="row-price">12</div>
+            </div>
+            <div class="compact-row sr">
+              <div>
+                <div class="compact-name">Hot Water Infusion</div>
+                <div class="compact-sub">Cucumber, ginger &amp; honey · Cinnamon, lemon &amp; ginger · Orange and ginger mint</div>
+              </div>
+              <div class="row-price">10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BAND — Fresh Juices -->
+      <div class="drink-band" style="height:280px">
+        <img src="fresh_juice.png" alt="Fresh Juices" style="object-position:center 35%">
+        <div class="drink-band-overlay" style="background:linear-gradient(to bottom,rgba(13,17,7,0.3),rgba(13,17,7,0.88))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 4rem">
+          <span style="font-size:0.57rem;letter-spacing:0.38em;text-transform:uppercase;color:#C4A35A">Cold Pressed · Freshly Made</span>
+          <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(32px,4vw,52px);font-weight:400;font-style:italic;color:#F5F0E8;letter-spacing:-0.02em;margin-top:0.25rem;line-height:1">Fresh Juices</h2>
+        </div>
+      </div>
+
+      <div class="panel-inner" style="padding-top:3rem;padding-bottom:6rem">
+        <span class="cat-label sr">Fresh Juices</span>
+        <div class="cat-rule"></div>
+        <div class="drinks-2col">
+          <div>
+            <div class="compact-row sr"><div><div class="compact-name">Watermelon Juice</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pineapple Juice</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Mango Juice</div></div><div class="row-price">12</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Passion Juice</div></div><div class="row-price">14</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Mango Mint</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Passion Mint</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Watermelon Mint</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Pineapple Mint</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Passion Watermelon Wonder</div></div><div class="row-price">15</div></div>
+          </div>
+          <div>
+            <div class="compact-row sr"><div><div class="compact-name">Mango Strawberry Shock</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Watermelon Cooler</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Cocktail Juice</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Apple Mint Lemon Love</div></div><div class="row-price">15</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Orange Juice</div></div><div class="row-price">18</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Orange &amp; Carrot Mix</div></div><div class="row-price">18</div></div>
+            <div class="compact-row sr"><div><div class="compact-name">Apple Juice</div></div><div class="row-price">20</div></div>
+          </div>
+        </div>
+        <div class="menu-note sr" style="margin-top:2.5rem">All prices in thousands of UGX.</div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer>
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2.5rem;margin-bottom:2.5rem">
+        <div>
+          <img src="logo.png" alt="Olives Restaurant &amp; Bar" style="height:48px;opacity:0.82;filter:drop-shadow(0 0 1px rgba(245,240,232,0.2))">
+          <p style="margin-top:1rem;font-size:0.73rem;color:rgba(245,240,232,0.35);line-height:1.7;max-width:240px">
+            63 Naguru Drive<br>Kampala, Uganda
+          </p>
+        </div>
+        <nav style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;padding-top:0.25rem">
+          <a href="index.html"        class="footer-link">Home</a>
+          <a href="index.html#story"  class="footer-link">Our Story</a>
+          <a href="menu.html"         class="footer-link">Menu</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </nav>
+        <div style="display:flex;gap:1.25rem;padding-top:0.25rem">
+          <a href="https://www.instagram.com/oliveskampala/?hl=en" target="_blank" rel="noopener" class="footer-link" aria-label="Instagram">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@oliveskampala" target="_blank" rel="noopener" class="footer-link" aria-label="TikTok">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(107,124,62,0.13);padding-top:1.75rem;text-align:center">
+        <p style="font-size:0.7rem;color:rgba(245,240,232,0.25);letter-spacing:0.08em">
+          © 2025 Olives Restaurant &amp; Bar · 63 Naguru Drive, Kampala, Uganda
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.menu-panel');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected','true');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        window.scrollTo({ top: document.querySelector('.tab-bar').offsetTop - 68, behavior: 'smooth' });
+        observeVisible();
+      });
+    });
+
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+
+    function observeVisible() {
+      document.querySelectorAll('.menu-panel.active .sr:not(.in)').forEach(el => io.observe(el));
+    }
+    observeVisible();
+
+    // Parallax on pizza band images — image drifts down as you scroll down
+    const pizzaBands = document.querySelectorAll('.pizza-band, .drink-band');
+    function parallaxBands() {
+      pizzaBands.forEach(band => {
+        const img = band.querySelector('img');
+        if (!img) return;
+        const rect = band.getBoundingClientRect();
+        const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+        const shift = (Math.max(0, Math.min(1, progress)) - 0.5) * 120;
+        const sc = img.dataset.scale;
+        img.style.transform = sc
+          ? `translateY(${shift}px) scale(${sc})`
+          : `translateY(${shift}px)`;
+      });
+    }
+    window.addEventListener('scroll', parallaxBands, { passive: true });
+    parallaxBands();
+
+    // Logo white-bg removal
+    function removeWhiteBg(img) {
+      try {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const px = ctx.getImageData(0, 0, c.width, c.height);
+        for (let i = 0; i < px.data.length; i += 4) {
+          if (px.data[i] > 230 && px.data[i+1] > 230 && px.data[i+2] > 230) px.data[i+3] = 0;
+        }
+        ctx.putImageData(px, 0, 0);
+        img.src = c.toDataURL('image/png');
+      } catch(e) {}
+    }
+    document.querySelectorAll('img[src="logo.png"]').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) removeWhiteBg(img);
+      else img.addEventListener('load', () => removeWhiteBg(img), { once: true });
+    });
+  </script>
+</body>
+</html>
